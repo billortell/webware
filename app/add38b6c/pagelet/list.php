@@ -14,7 +14,7 @@ $query  = hdata_entry::select()
     ->where('uid = ?', $uid)
     ->order('created', 'desc')
     ->limit(10);
-    
+
 if (!user_session::isLogin($uid)) {
     $query->where('status = ?', add38b6c_entry::STATUS_PUBLISH);
 }

@@ -26,18 +26,14 @@ define('START_MEMORY_USAGE', memory_get_usage());
 define('DS', DIRECTORY_SEPARATOR);
 define('SYS_ROOT', realpath('..'). DS);
 
+if (preg_match("/gzip/", $_SERVER['HTTP_ACCEPT_ENCODING'])) {
+    //ob_start("ob_gzhandler");
+    ob_start();
+}
 
 set_include_path(implode(PATH_SEPARATOR, 
-    array(SYS_ROOT.'lib', SYS_ROOT.'app', get_include_path())));
+    array(SYS_ROOT.'app', SYS_ROOT.'lib', get_include_path())));
 
 require 'Hooto/Web/Boot.php';
 
-
-echo "
-<script type=\"text/javascript\"> \n
-document.getElementById('htdebug').textContent = 'Page rendered in "
-    . round((microtime(true) - START_TIME), 5) * 1000 ." ms, taking "
-    . round((memory_get_usage() - START_MEMORY_USAGE) / (1024 * 8), 2) ." KB';\n
-time = '".date("Y-m-d H:i:s")."';\n
-</script>";
 

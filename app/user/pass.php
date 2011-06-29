@@ -8,15 +8,15 @@ class user_pass
     public static function isValid(&$params, &$message = null) 
     {
         if (!isset($params['pass_current'])) {
-		    $message = 'pass_current can not be null';
+		    $message = 'Current password can not be null';
             return false;
 		}
         if (!isset($params['pass']) || !isset($params['pass_confirm'])) {
-            $message = 'pass or pass_confirm can not be empty';
+            $message = 'Password or Password-confirm can not be empty';
             return false;
         }
 		if (!Zend_Validate::is($params['pass'], 'StringLength', array(6, 32))) {
-		    $message = 'pass must between 6 and 32 characters long';
+		    $message = 'Password must between 6 and 32 characters long';
             return false;
         }
 		if ($params['pass'] != $params['pass_confirm']) {

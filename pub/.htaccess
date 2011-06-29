@@ -3,6 +3,7 @@
 
 # Don't show directory listings for URLs which map to a directory.
 Options -Indexes
+SetOutputFilter DEFLATE
 
 # Forbidden
 <FILES ~ ".(ini|phtml)$">
@@ -30,8 +31,8 @@ php_value date.timezone "Asia/Shanghai"
 php_flag session.auto_start off
 
 # Gzip output
-php_flag zlib.output_compression on
-php_value zlib.output_compression_level 9
+#php_flag zlib.output_compression on
+#php_value zlib.output_compression_level 9
 
 </IfModule>
 

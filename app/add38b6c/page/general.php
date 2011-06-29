@@ -14,22 +14,49 @@
 $this->pagelet("header", null, 'w');
 ?>
 
-<div class="clearhr"></div>
+<div id="instance-menu" class="wrapper clearboth">
+  <ul>
+    <?php
+    $conf = Hooto_Config_Array::get($this->reqs->ins.'/global');
+
+    if (isset($conf['menu'])) {
+        $menu = $conf['menu'];
+    } else {
+        $menu = array();
+    }
+
+    $uid = uname2uid($this->reqs->uname);
+    foreach ($menu as $key => $val) {
+        
+        if (isset($val['permission'])) {
+        
+            if (!user_session::isLogin($uid) 
+                || !user_session::isAllow($this->reqs->ins, 'entry.edit')) {
+                continue;
+            }
+        
+        }
+        
+        $link = $this->siteurl('/'.$key, $this->reqs->ins);
+        
+        if ($this->reqs->act == $key) {
+            echo "<li><a href=\"{$link}\" class=\"current\">{$val['title']}</a></li>";
+        } else {
+            echo "<li><a href=\"{$link}\">{$val['title']}</a></li>";
+        }
+    }
+    ?>
+  </ul>
+</div>
 
 <table class="wrapper clearboth">
   <tr>
-
-    <td valign="top">
-    <?php print $this->content; ?>
-    </td>
+    <td valign="top"><?php print $this->content; ?></td>
 
     <?php if ($this->sidebar !== NULL) { ?>
     <td width="20px"></td>
-    <td width="300px" valign="top">
-    <?php print $this->sidebar; ?>
-    </td>
+    <td width="300px" valign="top"><?php print $this->sidebar;?></td>
     <?php } ?>
-
   </tr>
 </table>
 

@@ -94,6 +94,7 @@ echo $msg;
       <td><b>Weight</b></td>
     </tr>
     <?php
+    //$conf = Hooto_Config_Array::get('global');
     foreach ($menus as $val) {
     $check = '';
     if ($val['status'] == 1) {
@@ -102,7 +103,7 @@ echo $msg;
     if ($val['instance'] == 'user-main') {
         $link = "<input name=\"link[{$val['id']}]\" type=\"text\" size=\"40\" value=\"{$val['link']}\" />";
     } else {
-        $link = $val['link'];
+        $link = $this->siteurl($val['link'], $val['instance'], array(':uname' => $session->uname));
     }
     ?>
     <tr>
@@ -112,7 +113,10 @@ echo $msg;
       <td><?php echo $val['instance']?></td>
       <td><input name="weight[<?php echo $val['id']?>]" type="text" size="3" value="<?php echo $val['weight']?>" /></td>
     </tr>
-    <?php } ?>
+    <?php 
+    } 
+    if (user_session::isAllow($this->reqs->ins, 'menu.custom')) {
+    ?>
     <tr>
       <td><input name="title[0]" type="text" size="15" value="" /></td>
       <td><input name="link[0]" type="text" size="40" value="" /></td>
@@ -120,6 +124,7 @@ echo $msg;
       <td>user-main</td>
       <td><input name="weight[0]" type="text" size="3" value="10" /></td>
     </tr>
+    <?php } ?>
     <tr>
       <td><input type="submit" name="submit" value="Save" /></td>
       <td></td>

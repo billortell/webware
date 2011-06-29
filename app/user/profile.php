@@ -19,4 +19,27 @@ class user_profile
 
         return true;
     }
+    
+    public static function fetch($uname)
+    {
+        try {
+        
+            $uid    = uname2uid($uname);
+            
+            $_profile = Hooto_Data_Sql::getTable('user_profile');
+            
+            $pf = $_profile->fetch($uid);
+            
+            if (isset($pf['id'])) {
+                $pf['content'] = Hooto_Util_Format::textHtmlFilter($pf['content']);
+            } else {
+                throw new Exception('No Profile Found');
+            }
+            
+        } catch (Exception $e) {
+            throw $e;
+        }
+        
+        return $pf;
+    }
 }

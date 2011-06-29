@@ -24,7 +24,6 @@
 
   <div id="menu">
     <ul>
-    <li><a href="#" class="current">Home</a></li> 
     <?php
     if (isset($this->reqs->uname)) {
         $uname  = $this->reqs->uname;
@@ -35,10 +34,14 @@
     }
     $menus = user_menu::getList(4, $uid);
     foreach ($menus as $val) {
-      echo "<li><a href=\"{$val['link']}\">{$val['title']}</a></li>";
+        $link = $this->siteurl($val['link'], $val['instance'], array(':uname' => $uname));
+        $class = "";
+        if ($val['instance'] == $this->reqs->ins) {
+            $class = "class=\"current\"";
+        }
+        echo "<li><a href=\"{$link}\" {$class}>{$val['title']}</a></li>";
     }
     ?>
-      <li><a href="#"><img src="/_w/img/feed12.png" /></a></li>
     </ul>
     
     <ul class="sr">

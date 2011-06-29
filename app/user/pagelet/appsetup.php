@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (count($menu) == 0) {
         
             $set['type'] = 4; // type: user main-menu
-            $set['link'] = "/$instance/";
+            //$set['link'] = "/$instance/";
 
             $_menu->insert($set);
             

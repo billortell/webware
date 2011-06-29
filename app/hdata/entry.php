@@ -90,6 +90,7 @@ class hdata_entry
                         $entryterms = array(
                             'gid' => $entry0['uid'],
                             'terms' => $entry->{$key},
+                            'terms_pre' => $entry0[$key],
                         );
                         hdata_taxonomy::replaceEntryTerms($taxonomy, $entryterms);
                     }

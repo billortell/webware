@@ -51,9 +51,10 @@ class hdata_taxonomy
         $level = '0';
         foreach ($root as $key => $val) {
             $val['_level'] = $level;
+            $val['_paths'] = array();
             self::$tmp1[$key] = $val;
             if (isset(self::$tmp[$key])) {
-                self::termHierarchy($key, $level);
+                self::termHierarchy($key, $level, array($val['id']));
             }
         }
         self::$tmp = array();
@@ -61,17 +62,19 @@ class hdata_taxonomy
         return self::$tmp1;
     }
     
-    public static function termHierarchy($pid, $level)
+    public static function termHierarchy($pid, $level, $paths)
     {
         $level++;
         
         foreach (self::$tmp[$pid] as $key => $val) {
             
             $val['_level'] = $level;
+            $val['_paths'] = $paths;
             self::$tmp1[$key] = $val;
             
             if (isset(self::$tmp[$key])) {
-                self::termHierarchy($key, $level);
+                $_paths = array_merge($paths, array($val['id']));
+                self::termHierarchy($key, $level, $_paths);
             }
         }
     }
@@ -84,50 +87,103 @@ class hdata_taxonomy
         
         if ($taxonomy['type'] == 'taxonomy_autocomplete') {
             
+            $_terms_out = array();
+            $_terms_old = array();
+            $_terms_new = array();
+            
             $_terms = explode(",", $terms['terms']);
-            $hashs = array();
+            
             $term_data = array();
             
+            if (isset($terms['terms_pre'])) {
+            
+                $tmp = explode(",", $terms['terms_pre']);
+                
+                foreach ($tmp as $key => $val) {
+                    $val = trim($val);
+                    if (strlen($val) > 0) {
+                        $hash = substr(md5(strtolower($val)), 0, 16);
+                        $_terms_out[$hash] = $val;
+                    }
+                }
+            }
+            
             foreach ($_terms as $val) {
+            
                 $val = trim($val);
+                if (strlen($val) == 0) {
+                    continue;
+                }
+                
                 $hash = substr(md5(strtolower($val)), 0, 16);
-                $hashs[] = $hash;
-                $term_data[$hash] = array('hash' => $hash, 'name' => $val);
+                if (isset($term_data[$hash])) {
+                    continue;
+                }
+                
+                if (isset($_terms_out[$hash])) {
+                    $_terms_old[] = $hash;
+                    unset($_terms_out[$hash]);
+                } else {
+                    $_terms_new[] = $hash;
+                }
+
+                $term_data[$hash] = $val;
             }
         
-            $arg = trim(str_repeat(',?', count($hashs)), ',');
-            
-            $query = $query->select();
-            $query->from('term_data')
-                ->where('gid = ?', $terms['gid'])
-                ->where('taxon = ?', $taxonomy['id'])
-                ->where("hash IN ($arg)", $hashs)
-                ->limit(1000);
+            $hashs = array_merge(array_keys($_terms_out), $_terms_new);
+            $ret = array();
+            if (count($hashs) > 0) {
+                $arg = trim(str_repeat(',?', count($hashs)), ',');
 
-            $ret = $db->query($query);
+                $query = $query->select()->from('term_data')
+                    ->where('gid = ?', $terms['gid'])
+                    ->where('taxon = ?', $taxonomy['id'])
+                    ->where("hash IN ($arg)", $hashs)
+                    ->limit(1000);
+
+                $ret = $db->query($query);
+            }
             
             $exists = array();
             foreach ($ret as $val) {
                 $exists[$val['hash']] = $val;
             }
             
-            foreach ($term_data as $key => $val) {
+            // append new
+            foreach ($_terms_new as $key) {
             
                 if (!isset($exists[$key])) {
                 
-                    $val['taxon'] = $taxonomy['id'];
-                    $val['gid'] = $terms['gid'];
+                    $set = array(
+                        'taxon' => $taxonomy['id'],
+                        'gid' => $terms['gid'],
+                        'rating' => 1,
+                        'hash' => $key,
+                        'name' => $term_data[$key],
+                    );
                 
-                    $db->insert($val);
+                    $db->insert($set);
                     
+                } else {
+
+                    $set = array('rating' => ($exists[$key]['rating'] + 1));
+                    $db->update($set, array('id' => $exists[$key]['id']));
                 }
                 
-                //unset($exists[$key]);
             }
             
-            //foreach ($exists as $val) {
-            //    $db->delete($val['id']);
-            //}            
+            // Lower rating
+            foreach ($_terms_out as $key => $val) {
+                
+                if (!isset($exists[$key])) {
+                    continue;
+                }
+                
+                $rating = ($rating = ($exists[$key]['rating'] - 1) < 0) ? 0 : $rating;
+                
+                $db->update(array('rating' => $rating), array('id' => $exists[$key]['id']));
+            }
+           
         }
     }
 }

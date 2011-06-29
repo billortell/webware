@@ -1,5 +1,13 @@
 <?php
 
+$session = user_session::getInstance();
+if ($session->uid == "0") {
+    print w_msg::simple('error', 'Access Denied');
+    return;
+}
+
+$msg = '';
+
 if (!isset($hdata_instance)) {
     return;
 }
@@ -9,8 +17,8 @@ Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
 $entry = new Hooto_Object($_REQUEST);
 
-$entry->uid = '0eb466';
-$entry->uname = $this->reqs->uname;
+$entry->uid = $session->uid;
+$entry->uname = $session->uname;
 $entry->created = date("Y-m-d H:i:s");
 $entry->updated = date("Y-m-d H:i:s");
 
@@ -20,24 +28,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         try {
         
-            if (!isset($entry->id)) {
+            if (!isset($entry->id) || strlen($entry->id) < 1) {
                 $entry->id = Core_Util_Uuid::create();
             }
             
+            //print_r($entry);die();
             $entry->instance = $hdata_instance;
             
             hdata_entry::replaceEntry($entry);
             
-            $this->msg = w_msg::get('success', 'Success');
+            $msg = w_msg::simple('success', 'Success');
             
         } catch (Exception $e) {
         
-            $this->msg = w_msg::get('error', $e->getMessage());
+            $msg = w_msg::simple('error', $e->getMessage());
             //return $this->editAction();
         }
         
     } else {
-        $this->msg = w_msg::get('error', $msgstr);
+        $msg = w_msg::simple('error', $msgstr);
     } 
 
     $params = null;
@@ -61,7 +70,7 @@ if (isset($this->reqs->id)) {
     $entry->summary_auto = 1;
 }
 
-$where = array('taxon' => 1, 'gid' => '0eb466');
+$where = array('taxon' => 1, 'gid' => $session->uid);
 $taxon_cats = hdata_taxonomy::fetchTerms($where);
 
 if (isset($entry->content)) {
@@ -111,7 +120,9 @@ mediaplugin = {
 </script>
 <!-- /TinyMCE -->
 
-<?php print $this->pagelet('msg-inter');?>
+<?php 
+print $msg;
+?>
 
 <form id="nodeedit" name="nodeedit" action="<?=$this->reqs->base?>/<?=$this->reqs->ins?>/edit" method="post">
 

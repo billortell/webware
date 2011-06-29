@@ -54,27 +54,4 @@ class add38b6c_entry
     public static function saveEntry($entry)
     {
     }
-    
-    public function getArchives($where, $limit = null, $offset = null)
-    {
-       
-        $gdb = Zend_Registry::get('gdb');
-        $select = $gdb->select();
-        $select->from('kit_node as node', 
-                        'YEAR(created) AS year, MONTH(created) AS month, COUNT(*) as count');
-
-        if (!isset($where['e.node.status']) && !isset($where['in.node.status'])) {
-            $where['e.node.status'] = Kit_Node_Util::STATUS_PUBLISH;
-        }
-
-        Kit_Db_Util::buildSelectWhere($select, $where);
-
-        $select->group('YEAR(created) , MONTH(created)');
-        $select->order('created DESC');
-        $select->limit((int)$limit, (int)$offset);
-
-        $result = (array)$gdb->fetchAll($select->__toString());
-    
-        return $result;
-    }
 }

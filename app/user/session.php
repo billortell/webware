@@ -54,8 +54,8 @@ final class user_session
         if ($uid == '0') {
             return (self::getInstance()->uid != '0' ? true : false);
         }
-        
-        return ($uid == self::getInstance()->uid ? true : false);
+
+        return (($uid === self::getInstance()->uid) ? true : false);
     }
     
     //

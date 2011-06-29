@@ -61,6 +61,8 @@ $feed = hdata_taxonomy::fetchTerms($where);
 </table>
 
 <div class="clearhr"></div>
-<div>
-    <a class="abutton" href="<?=$this->reqs->urlins?>/term-category-edit/?id=0">New Term</a>
-</div>
+<?php
+if (user_session::isLogin($uid)) {
+?>
+<a class="abutton" href="<?=$this->reqs->urlins?>/term-category-edit/?id=0">New Term</a>
+<?php } ?>

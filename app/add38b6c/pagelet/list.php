@@ -15,6 +15,16 @@ $query  = hdata_entry::select()
     ->order('created', 'desc')
     ->limit(10);
 
+if (isset($this->reqs->q)) {
+    $query->where("title LIKE '%{$this->reqs->q}%'");
+}
+if (isset($this->reqs->cat)) {
+    $query->where("category = ?", $this->reqs->cat);
+}
+if (isset($this->reqs->tag)) {
+    $query->where("tag LIKE '%{$this->reqs->tag}%'");
+}
+
 if (!user_session::isLogin($uid)) {
     $query->where('status = ?', add38b6c_entry::STATUS_PUBLISH);
 }
@@ -44,7 +54,7 @@ foreach ($feed as $entry) {
         $entry['category_display'] = $entry['category'];
     }
     
-    $entry['href_category']  = "{$this->reqs->urlins}/entry?term={$entry['category']}";
+    $entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}";
     
     if (user_session::isAllow($this->reqs->ins, 'entry.edit')) {
         $entry['href_edit']  = "{$this->reqs->urlins}/edit?id={$entry['id']}";
@@ -63,7 +73,7 @@ foreach ($feed as $entry) {
         <span class="term"><img src="/_w/img/fffam/tag_blue.png"/> 
         <?php 
         foreach ((array)$entry['tag'] as $term) {
-            echo "&nbsp;<a href=\"#{$term}\">{$term}</a>";
+            echo "&nbsp;<a href=\"{$this->reqs->urlins}/index?tag={$term}\">{$term}</a>";
         }        
         ?>
         </span>

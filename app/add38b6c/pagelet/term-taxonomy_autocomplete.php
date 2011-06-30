@@ -35,7 +35,7 @@ shuffle($feed);
 echo "<div class=\"contentbox entry-tag-list\">";        
 foreach ($feed as $key => $val) {
     $wcount = floor(($val['rating'] - $min) / ($len * 0.1));
-    echo "<span><a class=\"term{$wcount}\">{$val['name']}</a></span>";        
+    echo "<span><a class=\"term{$wcount}\" href=\"{$this->reqs->urlins}/index?tag={$val['name']}\">{$val['name']}</a></span>";        
 }
 echo "</div>";
 

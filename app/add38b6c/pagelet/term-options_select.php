@@ -42,7 +42,7 @@ $feed = hdata_taxonomy::fetchTerms($where);
   ?>
   <tr id="term-<?=$val['id']?>" class="<?php echo $draggAble;?>">
    	<td style="padding-left: <?php echo 20 * $val['_level'] + 5;?>px;">
-      <a href="/node/list/?treeid=<?php echo $val['id']?>">
+      <a href="<?=$this->reqs->urlins?>/index?cat=<?=$val['id']?>">
         <b><?php echo $val['name']?></b>
       </a>
     </td>

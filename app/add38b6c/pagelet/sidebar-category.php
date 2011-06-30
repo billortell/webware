@@ -13,7 +13,7 @@ $taxon_cats = hdata_taxonomy::fetchTerms($where);
   <ul>
     <?php
     foreach ($taxon_cats as $key => $val) { 
-    $link = $this->siteurl("/index?term={$val['id']}", $this->reqs->ins);
+    $link = $this->siteurl("/index?cat={$val['id']}", $this->reqs->ins);
     ?>
     <li style="padding-left: <?php echo 20 * $val['_level']?>px">
       <a href="<?=$link?>"><b><?=$val['name']?></b></a>

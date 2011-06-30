@@ -141,7 +141,7 @@ echo $msg;
     <td></td>
     <td>
       <input type="submit" name="submit" value="Save" />
-      <a href="<?=$this->reqs->urlins?>/term-category/">Cancel</a>
+      <a href="<?=$this->reqs->urlins?>/term-category/">Go Back</a>
     </td>
   </tr>
 

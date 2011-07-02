@@ -3,16 +3,21 @@
 if (!isset($hdata_instance)) {
     return;
 }
+$session = user_session::getInstance();
+
 
 hdata_entry::setInstance($hdata_instance);
 
 $entry = hdata_entry::fetchEntry($this->reqs->id);
 
-Hooto_Web_View::headStylesheet('/_w/css/cm.css');
-
-if (!isset($entry['id'])) {
+if (!isset($entry['id']) 
+    || $entry['status'] == 0
+    || ($entry['status'] > 1 && !user_session::isLogin($entry['uid']))) {
+    print w_msg::simple('error', 'Page Not Found');
     return;
 }
+
+Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
 Hooto_Registry::set('entry', $entry);
 
@@ -21,7 +26,7 @@ $taxon_cats = hdata_taxonomy::fetchTerms(1, $entry['category']);
 $entry['href'] = "#";
 $entry['tag'] = explode(",", $entry['tag']);
 
-$entry['summary'] = Hooto_Util_Format::textHtmlFilter($entry['summary']);
+$entry['summary'] = Hooto_Util_Format::summaryPlainText($entry['summary'], 1000);
 $entry['content'] = Hooto_Util_Format::textHtmlFilter($entry['content']);
 
 if (user_session::isAllow($this->reqs->ins, 'entry.edit')) {
@@ -30,33 +35,79 @@ if (user_session::isAllow($this->reqs->ins, 'entry.edit')) {
 if (user_session::isAllow($this->reqs->ins, 'entry.delete')) {
     $entry['href_delete']  = "{$this->reqs->urlins}/delete?id={$entry['id']}";
 }
+
+if (isset($taxon_cats[$entry['category']])) {
+    $entry['category_display'] = $taxon_cats[$entry['category']]['name'];
+} else {
+    $entry['category_display'] = $entry['category'];
+}
+$entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}";
 ?>
 <div class="entry-view">
+
   <div class="header">
-            
+    
     <h1 class="title"><?=$entry['title']?></h1>
-     <div class="info">
-       <img src="/_w/img/fffam/date.png"/> <?=$entry['created']?>&nbsp;&nbsp;
-       <img src="/_w/img/fffam/folder_page.png"/> Views(?)&nbsp;&nbsp;
-       <img src="/_w/img/fffam/folder.png"/> <?=$taxon_cats[$entry['category']]['name']?>  
-       <span>
+    
+    <?php
+    if ($entry['summary_auto'] == 0) {
+    ?>
+    <table width="100%" class="info">
+      <tr>
+        <td valign="top">            
+          <div><b>Summary:</b> <?=$entry['summary']?></div>
+          <div>
+            <img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 
+            <?php foreach ((array)$entry['tag'] as $term): ?> 
+            <span><a href="#<?=$term?>"><?=$term?></a></span>
+            <?php endforeach; ?>
+          </div>
+        </td>
+        <td width="40%" valign="top">
+          <table width="100%">
+          <tr><td class="infotablekey">Created:</td><td><?=$entry['created']?></td></tr>
+          <tr><td class="infotablekey">Categories:</td><td><a href="<?=$entry['href_category']?>"><?=$entry['category_display']?></a></td></tr>
+          <tr><td class="infotablekey">Activity:</td><td><?=$entry['stat_access']?> views</td></tr>
+          <tr><td class="infotablekey">Comments:</td><td><a href="#comment-view">View</a> , <a href="#comment-add">Add Comment</a></td></tr>
+          <tr><td></td><td>
+          <?php
+          if (isset($entry['href_delete'])) {
+            echo "<span><img src=\"/_w/img/fffam/page_white_delete.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_delete']}\">Delete</a></span>";
+          }
+          if (isset($entry['href_edit'])) {
+            echo "<span><img src=\"/_w/img/fffam/page_white_edit.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_edit']}\">Edit</a></span>";
+          }
+          ?>
+          </td></tr>
+          </table>
+        </td>
+    </table>
+    <?php } else { ?>
+    <div class="info">
+        <span><img src="/_w/img/fffam/date.png" align="absmiddle"/> <?=$entry['created']?></span>
+        <span><img src="/_w/img/fffam/chart_organisation.png" align="absmiddle"/> <a href="<?=$entry['href_category']?>"><?=$entry['category_display']?></a></span>
+        <span><img src="/_w/img/fffam/folder_page.png" align="absmiddle"/> Views(<?=$entry['stat_access']?>)</span>
         <?php
-        if (isset($entry['href_edit'])) {
-            echo " <a href=\"{$entry['href_edit']}\">Edit</a>";
-        }
         if (isset($entry['href_delete'])) {
-            echo " <a href=\"{$entry['href_delete']}\">Delete</a>";
+            echo "<span><img src=\"/_w/img/fffam/page_white_delete.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_delete']}\">Delete</a></span>";
+        }
+        if (isset($entry['href_edit'])) {
+            echo "<span><img src=\"/_w/img/fffam/page_white_edit.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_edit']}\">Edit</a></span>";
         }
         ?>
-      </span>
-     </div>
-   </div>
-   <div class="content"><?=$entry['content']?></div>
-   <div class="clear_both">
-     <span class="term"><img src="/_w/img/fffam/tag_blue.png" title="Tags" />Tags:
+    </div>
+    <?php } ?>
+  </div>
+  <div class="content"><?=$entry['content']?></div>
+  <?php
+  if ($entry['summary_auto'] == 1) {
+  ?>
+  <div class="clear_both">
+     <span class="term"><img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 
      <?php foreach ((array)$entry['tag'] as $term): ?> 
      &nbsp;&nbsp;<a href="#<?=$term?>"><?=$term?></a>
      <?php endforeach; ?></span>
   </div>
+  <?php } ?>
 </div>
 

@@ -156,7 +156,7 @@ print $msg;
       </div>
       
       <div id="summary_auto_text" class="clear hideifnojs">
-        <textarea style="width:100%" id="summary" name="summary" rows="10"><?=$entry->summary?></textarea>
+        <textarea class="entry_edit_textarea" id="summary" name="summary" rows="10"><?=$entry->summary?></textarea>
       </div> 
                
     </div>
@@ -177,7 +177,7 @@ print $msg;
     </div> 
     
     <div class="clear">
-      <textarea style="width:100%" id="content" name="content" rows="30"><?=$entry->content?></textarea>
+      <textarea class="entry_edit_textarea" id="content" name="content" rows="30"><?=$entry->content?></textarea>
     </div>
     
 
@@ -294,3 +294,4 @@ document.getElementById('content_richeditor_ctrl').className = '';
 tinyMCE.execCommand("mceAddControl", false, 'content');
 
 </script>
+

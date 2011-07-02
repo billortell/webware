@@ -10,7 +10,11 @@ if (!isset($this->reqs->id)) {
     
 hdata_entry::setInstance($hdata_instance);
     
-$links[] = array('url' => $_GET['url'], 'title' => 'Back');
+if (isset($_GET['url'])) {
+    $links[] = array('url' => $_GET['url'], 'title' => 'Back');
+} else {
+    $links[] = array('url' => $this->siteurl('/', $this->reqs->ins), 'title' => 'Back');
+}
 
 try {
             

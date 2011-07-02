@@ -66,7 +66,7 @@ $entry = Hooto_Registry::get('entry');
 if (isset($entry['comment']) && $entry['comment'] == 1) {
 ?>
 <div class="comment-form">
-  <a name="comment"></a>
+  <a name="comment-add"></a>
   <h3 class="comment-form-htitle">Leave a Comment</h3>
   <form id="form_comment_submit" action="<?=$this->reqs->urlins?>/comment?url=<?php echo $this->reqs->url?>" method="post">
   <input type="hidden" name="pid" value="<?=$entry['id']?>" />

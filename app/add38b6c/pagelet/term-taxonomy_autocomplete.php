@@ -20,7 +20,7 @@ $query = $db->select()
     ->where('taxon = ?', $taxon)
     ->where('gid = ?', $uid)
     ->order('rating', 'desc')
-    ->limit(300);
+    ->limit(150);
 
 $feed = $db->query($query);
 

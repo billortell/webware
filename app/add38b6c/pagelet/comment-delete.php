@@ -13,8 +13,10 @@ hdata_entry::setInstance($hdata_instance);
 $links[] = array('url' => $_GET['url'], 'title' => 'Back');
 
 try {
-            
-    hdata_entry::deleteEntry($this->reqs->id);
+
+    $set = array('id' => $this->reqs->id, 'status' => 0);
+    
+    hdata_entry::updateEntry($set);
 
     $this->msg = w_msg::get('success', 'Success', $links);
             

@@ -29,23 +29,18 @@ foreach ((array)$ret as $val) {
     $val['month'] = sprintf("%02d", $val['month']); 
     $feed[$val['year']][$val['month']] = $val;
 }
-
-//krsort($feed);
-        
-foreach ($feed as $key => $val) {
-    //ksort($feed[$key]); 
-}
-
 ?>
 
-<?php foreach ($feed as $year => $archives): ?>
+<?php 
+$url = $this->siteurl("/index?date=", $this->reqs->ins);
+foreach ($feed as $year => $archives): ?>
 <div class="entry-archives">
   <div class="hinfo">
-    <h3><a href="/node/list/date/<?=$year?>"><?=$year?></a></h3>
+    <h3><a href="<?=$url.$year?>"><?=$year?></a></h3>
   </div>
   <p>
     <?php foreach ($archives as $val): ?>
-    <a href="/node/list/date/<?=$year.'-'.$val['month']?>"><b><?=date("F", strtotime($year.'-'.$val['month']))?></b></a>(<?=$val['count']?>)&nbsp;&nbsp;
+    <a href="<?=$url.$year.'-'.$val['month']?>"><b><?=date("F", strtotime($year.'-'.$val['month']))?></b></a>(<?=$val['count']?>)&nbsp;&nbsp;
     <?php endforeach; ?>
   </p>
   <div class="binfo"></div>

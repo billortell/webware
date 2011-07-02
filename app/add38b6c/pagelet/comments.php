@@ -10,14 +10,19 @@ if (!Hooto_Registry::isRegistered('entry')) {
 
 hdata_entry::setInstance($hdata_instance);
 
-$query  = hdata_entry::select()->where('pid = ?', $this->reqs->id)->order('created', 'asc')->limit(50);
-$feed   = hdata_entry::query($query);
+$query = hdata_entry::select()
+    ->where('pid = ?', $this->reqs->id)
+    ->where('status = ?', 1)
+    ->order('created', 'asc')
+    ->limit(50);
+
+$feed = hdata_entry::query($query);
 
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
 ?>
 <div class="comments">
-  <h3>Comments</h3>      
+  <h3>Comments</h3><a name="comment-view"></a>
   <?php
   foreach ($feed as $val) {
     $val['content'] = Hooto_Util_Format::textHtmlFilter($val['content']);

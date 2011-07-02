@@ -42,6 +42,9 @@ class hdata_entry
     
     public static function updateEntry($entry)
     {
+        if (is_array($entry)) {
+            $entry = (object)$entry;
+        }
         $id = self::$metadata['entry']['primary'];
         if (!isset($entry->{$id})) {
             return false;
@@ -130,6 +133,7 @@ class hdata_entry
         
         $db = Hooto_Data_Sql::getTable(self::$metadata['entry']['name']);
     
-        $db->delete($id, $primary);
+        //$db->delete($id, $primary);
+        $db->update(array('status' => 0), array("$primary" => $id));
     }
 }

@@ -76,6 +76,9 @@ final class user_session
                 foreach ($ret as $val) {
                     self::$_perms[$val['instance']][$val['permission']] = true;
                 }
+            } else {
+            
+                self::$_perms = array();
             }
         }
         

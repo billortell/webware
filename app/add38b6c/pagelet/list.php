@@ -77,7 +77,7 @@ foreach ($feed as $entry) {
     
     $entry['href']  = "{$this->reqs->urlins}/entry?id={$entry['id']}";    
     
-    if (strlen($entry['summary']) > 1) {
+    if (strlen($entry['summary_auto']) == 0) {
         $entry['summary'] = Hooto_Util_Format::textHtmlFilter($entry['summary']);
     } else {
         //$entry['summary'] = wpautop(wptexturize( cutstr((($entry['content'])), 400) ));
@@ -126,7 +126,9 @@ foreach ($feed as $entry) {
         ?>
       </div>
     </div>
+    
     <div class="content"><?=$entry['summary']?></div>
+    
     <div class="infof">
       <span><img src="/_w/img/fffam/comment_add.png" align="absmiddle"/> <a href="<?=$entry['href']?>#comment-add">Leave a Reply</a></span>
       <span><img src="/_w/img/fffam/page_white_go.png" align="absmiddle"/> <a href="<?=$entry['href']?>">Read more</a></span>

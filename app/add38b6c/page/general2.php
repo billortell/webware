@@ -49,15 +49,23 @@ $this->pagelet("header", null, 'w');
   </ul>
 </div>
 
-<table class="wrapper clearboth">
-  <tr>
-    <?php if ($this->sidebar !== NULL) { ?>
-    <td width="240px" valign="top"><?php print $this->sidebar;?></td>
-    <td width="20px"></td>
-    <?php } ?>
-    <td valign="top"><?php print $this->content; ?></td>
-  </tr>
-</table>
+<div class="wrapper clearboth">
+<?php
+if ($this->sidebar !== NULL) { 
+?>
+<div class="mainbody-leftbox" style="width:240px;">
+<?php print $this->sidebar; ?>
+</div>
+<div class="mainbody-rightbox" style="width:740px;">
+<?php print $this->content;?>
+</div>
+<?php
+} else {
+    print $this->content;
+}
+?>
+</div>
+
 
 </div></div>
 

@@ -63,6 +63,26 @@ if (!Hooto_Registry::isRegistered('entry')) {
 }
 $entry = Hooto_Registry::get('entry');
 
+$view = new Zend_View();
+$captcha = new Zend_Captcha_Image(array(
+    'name' => 'foo',
+    'wordLen' => 6,
+    'timeout' => 300,
+));
+$captcha->setFont(SYS_ROOT.'app/hcaptcha/fonts/coolveti/coolveti.ttf');
+$captcha->setImgDir(SYS_ROOT.'pub/data/captcha');
+$captcha->setImgUrl('/data/captcha');
+$captcha->setDotNoiseLevel(0);
+$captcha->setLineNoiseLevel(10);
+$captcha->setHeight(80);
+$captcha->setWidth(200);
+$captcha->setFontSize(30);
+
+echo $id = $captcha->generate();
+echo "<form method=\"post\" action=\"\">";
+echo $captcha->render($view);
+echo "</form>";
+
 if (isset($entry['comment']) && $entry['comment'] == 1) {
 ?>
 <div class="comment-form">

@@ -11,7 +11,7 @@ if (!isset($this->reqs->id)) {
 hdata_entry::setInstance($hdata_instance);
     
 if (isset($_GET['url'])) {
-    $links[] = array('url' => $_GET['url'], 'title' => 'Back');
+    $links[] = array('url' => $_GET['url'], 'title' => 'Back'); // TODO XSS
 } else {
     $links[] = array('url' => $this->siteurl('/', $this->reqs->ins), 'title' => 'Back');
 }

@@ -137,7 +137,7 @@ print $msg;
 	      <a href="javascript:;" onclick="richEditor.go('content', 'tinymce');">[Visual]</a>
           <a href="javascript:;" onclick="richEditor.go('content', 'html');">[HTML]</a>
         </div>
-        <textarea id="content" name="content" style="width:100%" rows="30" ><?php echo $entry->content?></textarea>
+        <textarea id="content" name="content" style="width:100%;" rows="20" ><?php echo $entry->content?></textarea>
       </td>
     </tr>
     <tr>

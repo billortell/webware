@@ -24,8 +24,13 @@ Hooto_Registry::set('entry', $entry);
 $taxon_cats = hdata_taxonomy::fetchTerms(1, $entry['category']);
 
 $entry['href'] = "#";
-$entry['tag'] = explode(",", $entry['tag']);
 
+if (strlen($entry['tag']) > 0) {
+    $entry['tag'] = explode(",", $entry['tag']);
+} else {
+    $entry['tag'] = array();
+}
+    
 $entry['summary'] = Hooto_Util_Format::summaryPlainText($entry['summary'], 1000);
 $entry['content'] = Hooto_Util_Format::textHtmlFilter($entry['content']);
 
@@ -56,12 +61,16 @@ $entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}
       <tr>
         <td valign="top">            
           <div><b>Summary:</b> <?=$entry['summary']?></div>
+          <?php
+          if (count($entry['tag']) > 0) {
+          ?>
           <div>
             <img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 
             <?php foreach ((array)$entry['tag'] as $term): ?> 
             <span><a href="#<?=$term?>"><?=$term?></a></span>
             <?php endforeach; ?>
           </div>
+        <?php } ?>
         </td>
         <td width="40%" valign="top">
           <table width="100%">
@@ -100,7 +109,7 @@ $entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}
   </div>
   <div class="content"><?=$entry['content']?></div>
   <?php
-  if ($entry['summary_auto'] == 1) {
+  if ($entry['summary_auto'] == 1 && count($entry['tag']) > 0) {
   ?>
   <div class="clear_both">
      <span class="term"><img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 

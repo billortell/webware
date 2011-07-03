@@ -68,6 +68,12 @@ if (isset($this->reqs->id)) {
 } else {
 
     $entry->summary_auto = 1;
+    $entry->comment = 1;
+}
+
+if (!user_session::isLogin($entry->uid) || $entry->status == 0) {
+    print w_msg::simple('error', 'Access Denied');
+    return;
 }
 
 $where = array('taxon' => 1, 'gid' => $session->uid);
@@ -135,27 +141,40 @@ print $msg;
   <td>
     <!-- node title -->
     <div class="entry_edit entry_edit_title">Title<font color="red">*</font></div>
-    <div><input class="entry_edit_input_title" id="title" name="title" type="text" value="<?=$entry->title?>" /></div>
+    <div>
+      <input class="entry_edit_input_title" id="title" name="title" type="text" value="<?=$entry->title?>" />
+    </div>
 
+    <!-- node title -->
+    <div class="entry_edit_title">Tags</div>
+    <div>
+        <input class="entry_edit_input_title" id="tag" name="tag" type="text" value="<?=$entry->tag?>"/> 
+        <br/>Separate multiple tags with commas: <b>Cats, Pet food, Dogs</b>
+    </div>
+    
     <!-- node summary -->
     <div id="summary_auto_box" class="hideifnojs">
-    
+      
+      <input type="hidden" id="summary_auto" name="summary_auto" value="<?=$entry->summary_auto?>" /> 
+      
       <div class="entry_edit_left entry_edit_info">
-        <div id="summary_auto_title" class="hideifnojs">
+        <div id="summary_auto_title">
           <span class="entry_edit_title">Summary</span> 
-          <span id="summary_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'summary'; openWindow('/media/manage-editorplugin/?target=summary', 'upload', '800', '700')">[Insert Images]</a></span>
+          <span> (<a href="javascript:changeAutoSummary(1)">Hide Summary</a>) </span>
+          <span id="summary_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'summary'; openWindow('/media/manage-editorplugin/?target=summary', 'upload', '700', '600')">[Insert Images]</a></span>
         </div>
       </div>
       
       <div class="entry_edit_right entry_edit_info">
-        <input type="checkbox" id="summary_auto" name="summary_auto" onchange="changeAutoSummary()" value="1" <?php if ($entry->summary_auto == 1) {echo 'checked';} ?> /> Auto Summary 
+        
         <span id="summary_richeditor_ctrl" class="hideifnojs">
           <a href="javascript:;" onclick="richEditor.go('summary', 'tinymce');">[Visual]</a>
           <a href="javascript:;" onclick="richEditor.go('summary', 'html');">[HTML]</a>
         </span>
+        
       </div>
       
-      <div id="summary_auto_text" class="clear hideifnojs">
+      <div id="summary_auto_text" class="clear">
         <textarea class="entry_edit_textarea" id="summary" name="summary" rows="10"><?=$entry->summary?></textarea>
       </div> 
                
@@ -166,7 +185,8 @@ print $msg;
     <!-- node content -->
     <div class="entry_edit_left entry_edit_info">
       <span class="entry_edit_title">Content <font color="red">*</font></span> 
-      <span id="content_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'content'; openWindow('/media/manage-editorplugin/?target=content', 'upload', '800', '700')">[Insert Images]</a></span>
+      <span id="do-edit-summary"> (<a href="javascript:changeAutoSummary(0)">Edit Summary</a>) </span>
+      <span id="content_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'content'; openWindow('/media/manage-editorplugin/?target=content', 'upload', '700', '600')">[Insert Images]</a></span>
     </div>
     
     <div class="entry_edit_right entry_edit_info">
@@ -177,7 +197,7 @@ print $msg;
     </div> 
     
     <div class="clear">
-      <textarea class="entry_edit_textarea" id="content" name="content" rows="30"><?=$entry->content?></textarea>
+      <textarea class="entry_edit_textarea" id="content" name="content" rows="25"><?=$entry->content?></textarea>
     </div>
     
 
@@ -196,7 +216,7 @@ print $msg;
         <table width="100%" border="0" cellpadding="5" cellspacing="0">
           
           <tr>
-            <td align="right">Allow Comment</td>
+            <td align="right" width="50%">Allow Comment</td>
             <td>
             <input type="checkbox" id="comment" name="comment" value="1" <?php if ($entry->comment == 1) {echo 'checked';} ?> />
             </td>
@@ -225,7 +245,7 @@ print $msg;
       <legend class="edit_option_title">Category</legend>
       
       <div class="edit_option_list">
-        <select id="category" name="category">
+        <select id="category" name="category" width="100%">
           <?php foreach ($taxon_cats as $item) { ?> 
           <option value="<?=$item['id']?>" <?php if ($item['id'] == $entry->category) { echo 'selected'; } ?>><?php echo str_repeat('...', $item['_level']).$item['name']?></option>
           <?php } ?>
@@ -234,16 +254,7 @@ print $msg;
       
     </fieldset>
     
-    <fieldset class="edit_option_box">
-      
-      <legend class="edit_option_title">Tags</legend>
-      
-      <div class="edit_option_list">
-        <input id="tag" name="tag" type="text" style="width:230px;" value="<?=$entry->tag?>"/> 
-        <br/>Separate multiple tags with commas: <b>Cats, Pet food, Dogs</b>
-      </div>
     
-    </fieldset>
     
   </td>
 </tr>
@@ -252,9 +263,28 @@ print $msg;
 
 <script>
 
-function changeAutoSummary() {
+function changeAutoSummary(summary_auto) {
   
-  if (document.getElementById('summary_auto').checked) {
+  if (summary_auto == '0') {
+  
+    document.getElementById('summary_auto_box').className = '';
+    document.getElementById('summary_richeditor_ctrl').className = '';
+    document.getElementById('summary_media_box').className = '';
+    
+    document.getElementById('summary_auto').value = '0';
+    document.getElementById('do-edit-summary').className = 'hideifnojs';
+    
+    tinyMCE.execCommand("mceAddControl", false, 'summary');
+    
+  } else {
+  
+    document.getElementById('summary_auto_box').className = 'hideifnojs';
+    
+    document.getElementById('summary_auto').value = '1';
+    document.getElementById('do-edit-summary').className = '';
+  }
+  
+  /*if (document.getElementById('summary_auto').checked) {
     
     document.getElementById('summary_auto_title').className = 'hideifnojs';
     document.getElementById('summary_auto_text').className = 'clear hideifnojs';
@@ -266,7 +296,7 @@ function changeAutoSummary() {
     document.getElementById('summary_auto_text').className = 'clear';
     document.getElementById('summary_richeditor_ctrl').className = '';
     
-  }
+  }*/
 }
 
 function openWindow(url, title, width, height, text) {
@@ -284,9 +314,8 @@ function openWindow(url, title, width, height, text) {
 
 
 /** content.summary */
-document.getElementById('summary_auto_box').className = '';
-changeAutoSummary();
-
+//document.getElementById('summary_auto_box').className = '';
+changeAutoSummary(<?=$entry->summary_auto?>);
 
 /** content */
 document.getElementById('content_media_box').className = '';

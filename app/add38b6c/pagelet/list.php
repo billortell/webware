@@ -39,11 +39,13 @@ if (isset($this->reqs->tag)) {
 }
 
 if (isset($this->reqs->date)) {
-    $start = strtotime($this->reqs->date);
+    
     if (preg_match('/^([0-9]{4})-([0-9]{2})$/', $this->reqs->date)) {
+        $start = strtotime($this->reqs->date);
         $query->where("created > ?", date("Y-m", $start));
         $query->where("created < ?", date("Y-m", strtotime("+1 Month", $start)));
     } else if (preg_match('/^([0-9]{4})$/', $this->reqs->date)) {
+        $start = gmmktime(0,0,0,1,1,$this->reqs->date);
         $query->where("created > ?", date("Y", $start));
         $query->where("created < ?", date("Y", strtotime("+1 Year", $start)));
     }
@@ -67,7 +69,12 @@ $taxon_cats = hdata_taxonomy::fetchTerms($where);
 
 foreach ($feed as $entry) {
 
-    $entry['tag'] = explode(",", $entry['tag']);
+    if (strlen($entry['tag']) > 0) {
+        $entry['tag'] = explode(",", $entry['tag']);
+    } else {
+        $entry['tag'] = array();
+    }
+    
     $entry['href']  = "{$this->reqs->urlins}/entry?id={$entry['id']}";    
     
     if (strlen($entry['summary']) > 1) {
@@ -99,9 +106,12 @@ foreach ($feed as $entry) {
       <div>
         <span><img src="/_w/img/fffam/date.png" align="absmiddle"/> <?php echo date('Y-m-d', strtotime($entry['created']));?></span>
         <span class="term"><img src="/_w/img/fffam/chart_organisation.png" align="absmiddle"/> <a href="<?=$entry['href_category']?>"><?=$entry['category_display']?></a></span>
-        <span class="term"><img src="/_w/img/fffam/tag_blue.png" align="absmiddle"/> 
+        
         <?php 
-        foreach ((array)$entry['tag'] as $term) {
+        if (count($entry['tag']) > 0) {
+            echo "<span class='term'><img src='/_w/img/fffam/tag_blue.png' align='absmiddle'/> ";
+        }
+        foreach ($entry['tag'] as $term) {
             echo "&nbsp;<a href=\"{$this->reqs->urlins}/index?tag={$term}\">{$term}</a>";
         }        
         ?>

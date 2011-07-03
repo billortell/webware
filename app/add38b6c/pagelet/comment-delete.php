@@ -10,7 +10,7 @@ if (!isset($this->reqs->id)) {
     
 hdata_entry::setInstance($hdata_instance);
     
-$links[] = array('url' => $_GET['url'], 'title' => 'Back');
+$links[] = array('url' => $_GET['url'], 'title' => 'Back'); // TODO XSS
 
 try {
 

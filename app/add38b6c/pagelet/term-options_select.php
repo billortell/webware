@@ -11,7 +11,7 @@ Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
 $uid = uname2uid($this->reqs->uname);
 
-$where = array('taxon' => 1, 'gid' => $uid);
+$where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => $uid);
 $feed = hdata_taxonomy::fetchTerms($where);
 
 ?>

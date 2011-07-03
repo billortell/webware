@@ -4,7 +4,7 @@ if (!isset($this->reqs->uname)) {
 }
 $uid = uname2uid($this->reqs->uname);
 
-$where = array('taxon' => 1, 'gid' => $uid);
+$where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => $uid);
 $taxon_cats = hdata_taxonomy::fetchTerms($where);
 
 ?>

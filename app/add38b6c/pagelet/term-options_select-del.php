@@ -31,7 +31,7 @@ $_term = Hooto_Data_Sql::getTable('term_data');
 
 try {
     
-    $where = array('taxon' => 1, 'gid' => $uid);
+    $where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => $uid);
     $ret = hdata_taxonomy::fetchTerms($where);
     $feed = array();
 

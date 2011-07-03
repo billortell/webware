@@ -69,6 +69,7 @@ if (isset($this->reqs->id)) {
 
     $entry->summary_auto = 1;
     $entry->comment = 1;
+    $entry->status = 1;
 }
 
 if (!user_session::isLogin($entry->uid) || $entry->status == 0) {
@@ -76,7 +77,7 @@ if (!user_session::isLogin($entry->uid) || $entry->status == 0) {
     return;
 }
 
-$where = array('taxon' => 1, 'gid' => $session->uid);
+$where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => $session->uid);
 $taxon_cats = hdata_taxonomy::fetchTerms($where);
 
 if (isset($entry->content)) {

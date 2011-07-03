@@ -21,7 +21,7 @@ Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
 Hooto_Registry::set('entry', $entry);
 
-$taxon_cats = hdata_taxonomy::fetchTerms(1, $entry['category']);
+$taxon_cats = hdata_taxonomy::fetchTerms(hdata_entry::$metadata['taxonomy']['category']['id'], $entry['category']);
 
 $entry['href'] = "#";
 

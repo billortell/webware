@@ -64,7 +64,7 @@ $feed = hdata_entry::query($query);
 
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
-$where = array('taxon' => 1, 'gid' => '0eb466');
+$where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => '0eb466');
 $taxon_cats = hdata_taxonomy::fetchTerms($where);
 
 foreach ($feed as $entry) {

@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$where = array('taxon' => 1, 'gid' => $uid);
+$where = array('taxon' => hdata_entry::$metadata['taxonomy']['category']['id'], 'gid' => $uid);
 $ret = hdata_taxonomy::fetchTerms($where);
 $feed = array();
 foreach ($ret as $key => $val) {

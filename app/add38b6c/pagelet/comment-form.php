@@ -22,30 +22,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entry->uid = 0;
     $entry->created = date("Y-m-d H:i:s");
     $entry->updated = date("Y-m-d H:i:s");
+
+    try {
+        
+        if (!hcaptcha_api::isValid($entry->captcha_word)) {
+            throw new Exception('Captcha value is wrong');
+        }
     
-    if (1) {
-        try {
+        $entry->instance = $hdata_instance;
             
-            $entry->instance = $hdata_instance;
-            
-            if ($entry->id == "") {
-                $entry->id = Core_Util_Uuid::create(); 
+        if ($entry->id == "") {
+            $entry->id = Core_Util_Uuid::create(); 
                 //print_r($entry);
                 //$db->insert($entry);
-            } else {
-                unset($entry->created);
-            }
-            //print_r($entry);
-            hdata_entry::replaceEntry($entry);
-            
-            $links[] = array('url' => $_GET['url'], 'title' => 'Back');
-            $this->msg = w_msg::get('success', 'Success', $links);
-            
-        } catch (Exception $e) {
-        
-            $this->msg = w_msg::get('error', $e->getMessage());
-            //return $this->editAction();
+        } else {
+            unset($entry->created);
         }
+            //print_r($entry);
+           // hdata_entry::replaceEntry($entry);
+            
+        $links[] = array('url' => $_GET['url'], 'title' => 'Back');
+        
+        $this->msg = w_msg::get('success', 'Success', $links);
+            
+    } catch (Exception $e) {
+        
+        $this->msg = w_msg::get('error', $e->getMessage());
+            //return $this->editAction();
     }
     
     print $this->pagelet('msg-inter');
@@ -63,27 +66,10 @@ if (!Hooto_Registry::isRegistered('entry')) {
 }
 $entry = Hooto_Registry::get('entry');
 
-$view = new Zend_View();
-$captcha = new Zend_Captcha_Image(array(
-    'name' => 'foo',
-    'wordLen' => 6,
-    'timeout' => 300,
-));
-$captcha->setFont(SYS_ROOT.'app/hcaptcha/fonts/coolveti/coolveti.ttf');
-$captcha->setImgDir(SYS_ROOT.'pub/data/captcha');
-$captcha->setImgUrl('/data/captcha');
-$captcha->setDotNoiseLevel(0);
-$captcha->setLineNoiseLevel(10);
-$captcha->setHeight(80);
-$captcha->setWidth(200);
-$captcha->setFontSize(30);
-
-echo $id = $captcha->generate();
-echo "<form method=\"post\" action=\"\">";
-echo $captcha->render($view);
-echo "</form>";
 
 if (isset($entry['comment']) && $entry['comment'] == 1) {
+
+$captchaurl = hcaptcha_api::getImgUrl();
 ?>
 <div class="comment-form">
   <a name="comment-add"></a>
@@ -105,8 +91,8 @@ if (isset($entry['comment']) && $entry['comment'] == 1) {
     <tr>
       <td align="right" valign="top"><b>Verification</b></td>
       <td>
-        <input type="text" name="verifycode" value="" size="6" />Type the characters you see in the picture below<br />
-        <img src="<?=$this->verifycode_image?>" />
+        <input type="text" name="captcha_word" value="" size="6" />Type the characters you see in the picture below<br />
+        <img src="<?=$captchaurl?>" />
       </td>
     </tr>
     <tr>

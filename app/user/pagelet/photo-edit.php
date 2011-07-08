@@ -112,7 +112,7 @@ echo $msg;
     </tr>
     <tr>
       <td></td>
-      <td><input type="submit" value="Upload" />
+      <td><input type="submit" value="Upload" class="input_button" />
     </tr>
   </table>
 </form>

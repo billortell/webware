@@ -1,5 +1,7 @@
 <?php
 
+$msg = '';
+
 if (!isset($hdata_instance)) {
     return;
 }
@@ -18,13 +20,13 @@ try {
     
     hdata_entry::updateEntry($set);
 
-    $this->msg = w_msg::get('success', 'Success', $links);
+    $msg = w_msg::simple('success', 'Success', $links);
             
 } catch (Exception $e) {
         
-    $this->msg = w_msg::get('error', $e->getMessage(), $links);
+    $msg = w_msg::simple('error', $e->simpleMessage(), $links);
 
 }
     
-print $this->pagelet('msg-inter');
+print $msg;
 

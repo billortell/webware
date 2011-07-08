@@ -121,7 +121,7 @@ echo $msg;
     </tr>
     <tr>
       <td></td>
-      <td ><input type="submit" name="submit" value="<?php echo $action_button;?>" /></td>
+      <td ><input type="submit" name="submit" class="input_button" value="<?php echo $action_button;?>" /></td>
     </tr>
   </table>
 </form>

@@ -126,7 +126,7 @@ echo $msg;
     </tr>
     <?php } ?>
     <tr>
-      <td><input type="submit" name="submit" value="Save" /></td>
+      <td><input type="submit" name="submit" value="Save" class="input_button" /></td>
       <td></td>
       <td></td>
       <td></td>

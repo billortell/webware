@@ -68,7 +68,7 @@ echo $msg;
     </tr>
     <tr>
       <td></td>
-      <td ><input type="submit" name="submit" value="Submit" /></td>
+      <td ><input type="submit" name="submit" value="Submit" class="input_button" /></td>
     </tr>
   </table>
 </form>

@@ -1,83 +1,84 @@
 <?php
+$msg = '';
+
+$links[] = array('url' => $this->reqs->url, 'title' => 'Back');
 
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 
-
+if (!isset($hdata_instance)) {
+    return;
+}
+hdata_entry::setInstance($hdata_instance);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    
-    if (!isset($hdata_instance)) {
-        return;
-    }
-
     if (!isset($this->reqs->pid) || !isset($this->reqs->puid) || !isset($this->reqs->pinstance)) {
-       return;
+        throw new Exception('400');
     }
     
-
-    hdata_entry::setInstance($hdata_instance);
-    
-    $entry = new Hooto_Object($_POST);
-    $entry->uid = 0;
-    $entry->created = date("Y-m-d H:i:s");
-    $entry->updated = date("Y-m-d H:i:s");
+    $item = new Hooto_Object($_POST);
+    $item->uid = 0;
+    $item->created = date("Y-m-d H:i:s");
+    $item->updated = date("Y-m-d H:i:s");
 
     try {
         
-        if (!hcaptcha_api::isValid($entry->captcha_word)) {
+        if (!hcaptcha_api::isValid($item->captcha_word)) {
             throw new Exception('Captcha value is wrong');
         }
     
-        $entry->instance = $hdata_instance;
+        $item->instance = $hdata_instance;
             
-        if ($entry->id == "") {
-            $entry->id = Core_Util_Uuid::create(); 
-                //print_r($entry);
-                //$db->insert($entry);
-        } else {
-            unset($entry->created);
-        }
+        if ($item->id == "") {
+            $item->id = Core_Util_Uuid::create(); 
             //print_r($entry);
-           // hdata_entry::replaceEntry($entry);
+            //$db->insert($entry);
+        } else {
+            unset($item->created);
+        }
+        //print_r($entry);
+        hdata_entry::replaceEntry($item);
             
-        $links[] = array('url' => $_GET['url'], 'title' => 'Back');
+        $msg = w_msg::simple('success', 'Success', $links);
         
-        $this->msg = w_msg::get('success', 'Success', $links);
+        unset($this->reqs->pid);
             
     } catch (Exception $e) {
         
-        $this->msg = w_msg::get('error', $e->getMessage());
-            //return $this->editAction();
-    }
-    
-    print $this->pagelet('msg-inter');
-    
-    return;
-} else {
-
-    if (!isset($this->reqs->id)) {
-       return;
+        $msg = w_msg::simple('error', $e->getMessage(), $links);
+        //return $this->editAction();
     }
 }
 
-if (!Hooto_Registry::isRegistered('entry')) {
-    return;
+$entry = array();
+
+if (Hooto_Registry::isRegistered('entry')) {
+    $entry = Hooto_Registry::get('entry');
 }
-$entry = Hooto_Registry::get('entry');
+
+if (!Hooto_Registry::isRegistered('entry') && isset($this->reqs->pid)) {
+    hdata_entry::setInstance($hdata_pinstance);
+    $entry = hdata_entry::fetchEntry($this->reqs->pid);
+}
+
+if (is_array($entry)) {
+    $entry = new Hooto_Object($entry);   
+}
+
+echo $msg;
 
 
-if (isset($entry['comment']) && $entry['comment'] == 1) {
+if (isset($entry->comment) && $entry->comment == 1) {
 
-$captchaurl = hcaptcha_api::getImgUrl();
+    $captchaurl = hcaptcha_api::getImgUrl();
 ?>
 <div class="comment-form">
   <a name="comment-add"></a>
   <h3 class="comment-form-htitle">Leave a Comment</h3>
   <form id="form_comment_submit" action="<?=$this->reqs->urlins?>/comment?url=<?php echo $this->reqs->url?>" method="post">
-  <input type="hidden" name="pid" value="<?=$entry['id']?>" />
-  <input type="hidden" name="pinstance" value="<?=$entry['instance']?>" />
-  <input type="hidden" name="puid" value="<?=$entry['uid']?>" />
+  <input type="hidden" name="pid" value="<?=$entry->id?>" />
+  <input type="hidden" name="pinstance" value="<?=$entry->instance?>" />
+  <input type="hidden" name="puid" value="<?=$entry->uid?>" />
   <input type="hidden" name="status" value="1" />
   <table width="100%" border="0" cellpadding="0" cellspacing="10">
     <tr>

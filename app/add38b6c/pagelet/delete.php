@@ -7,6 +7,7 @@ if (!isset($hdata_instance)) {
 if (!isset($this->reqs->id)) {
    return;
 }
+$msg = '';
     
 hdata_entry::setInstance($hdata_instance);
     
@@ -20,13 +21,13 @@ try {
             
     hdata_entry::deleteEntry($this->reqs->id);
 
-    $this->msg = w_msg::get('success', 'Success', $links);
+    $msg = w_msg::simple('success', 'Success', $links);
             
 } catch (Exception $e) {
         
-    $this->msg = w_msg::get('error', $e->getMessage(), $links);
+    $msg = w_msg::simple('error', $e->getMessage(), $links);
 
 }
     
-print $this->pagelet('msg-inter');
+print $msg;
 

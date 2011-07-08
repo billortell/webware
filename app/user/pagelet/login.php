@@ -66,7 +66,7 @@ if ($msg === null) {
     </tr>
     <tr>
       <td></td>
-      <td><input class="" type="submit" name="Submit" value="Sign in" /></td>
+      <td><input type="submit" name="Submit" value="Sign in" class="input_button" /></td>
     </tr>
     <tr>
       <td align="right"></td>

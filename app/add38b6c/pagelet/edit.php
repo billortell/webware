@@ -209,6 +209,21 @@ print $msg;
   <td width="280px" valign="top">
   
     <fieldset class="edit_option_box">
+      
+      <legend class="edit_option_title">Category</legend>
+      
+      <div class="edit_option_list">
+        <select id="category" name="category" width="100%">
+          <?php foreach ($taxon_cats as $item) { ?> 
+          <option value="<?=$item['id']?>" <?php if ($item['id'] == $entry->category) { echo 'selected'; } ?>><?php echo str_repeat('...', $item['_level']).$item['name']?></option>
+          <?php } ?>
+        </select>
+      </div>
+      
+    </fieldset>
+    
+    
+    <fieldset class="edit_option_box">
     
       <legend class="edit_option_title">Publish</legend>
       
@@ -241,21 +256,6 @@ print $msg;
       <div class="edit_button_commit"><input type="submit" name="Submit" class="input_button" value="Save" /></div>
     </fieldset>
       
-    <fieldset class="edit_option_box">
-      
-      <legend class="edit_option_title">Category</legend>
-      
-      <div class="edit_option_list">
-        <select id="category" name="category" width="100%">
-          <?php foreach ($taxon_cats as $item) { ?> 
-          <option value="<?=$item['id']?>" <?php if ($item['id'] == $entry->category) { echo 'selected'; } ?>><?php echo str_repeat('...', $item['_level']).$item['name']?></option>
-          <?php } ?>
-        </select>
-      </div>
-      
-    </fieldset>
-    
-    
     
   </td>
 </tr>

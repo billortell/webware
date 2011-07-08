@@ -92,6 +92,10 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
     
         $cfg = require $st."/global.php";
         
+        if (!in_array(10, $cfg['type'])) {
+            continue;
+        }
+        
         $instances[$cfg['instance']] = $cfg;
     }
     
@@ -106,13 +110,15 @@ foreach ($apps as $val) {
         $oper = '';
         if (file_exists(SYS_ROOT."app/{$ins['appid']}/permission.php")) {
             $oper .= ' - ';
-            //$oper .= "<a href=\"#\" class=\"light\">Settings</a>&nbsp;";
-            $oper .= "<a href=\"/user/appsetup?instance={$ins['instance']}&status=0\" class=\"light\">Disable</a>&nbsp;";
+            //$oper .= "<a href='#' class='light'>Settings</a>&nbsp;";
+            $oper .= "<a href='/user/appsetup?instance={$ins['instance']}&status=0' class='light'>Disable</a>&nbsp;";
         }
+        $appurl = $this->siteurl('', $val['instance'], array(':uname' => $session->uname));
+        
         $myProducts .= "<li>";
-        $myProducts .= "<img src=\"/_default/img/application.png\" />";
+        $myProducts .= "<img src='/_default/img/application.png' />";
         $myProducts .= "<span>";
-        $myProducts .= "<a href=\"#\">{$val['title']}</a>";
+        $myProducts .= "<a href='{$appurl}' target='_blank'>{$val['title']}</a>";
         $myProducts .= $oper;
         $myProducts .= "</span>";
         $myProducts .= "</li>";
@@ -125,16 +131,16 @@ foreach ($apps as $val) {
 foreach ($instances as $instance => $ins) {
 
     $tryProducts .= "<li>";
-    $tryProducts .= "<img src=\"/_default/img/application.png\" />";
+    $tryProducts .= "<img src='/_default/img/application.png' />";
     $tryProducts .= "<span>";
     $tryProducts .= "<b>{$ins['name']}</b> - ";
-    $tryProducts .= "<a href=\"/user/appsetup?instance={$instance}\" class=\"light\">Install</a>&nbsp;";
+    $tryProducts .= "<a href='/user/appsetup?instance={$instance}' class='light'>Install</a>&nbsp;";
     $tryProducts .= "</span>";
     $tryProducts .= "</li>";
 }
 
 if (strlen($myProducts) > 1) {
-    echo "<div class=\"products\">
+    echo "<div class='products'>
   <h2>My products</h2>
   <ul>{$myProducts}</ul> 
 </div>";
@@ -142,7 +148,7 @@ if (strlen($myProducts) > 1) {
 
 if (strlen($tryProducts) > 1) {
     echo "
-<div class=\"products\">
+<div class='products'>
   <h2>Try something new</h2>
   <ul>{$tryProducts}</ul> 
 </div>";

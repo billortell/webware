@@ -63,12 +63,20 @@ final class w_msg
         return self::$_instance;
     }
     
-    public static function simple($type, $body)
+    public static function simple($type, $body, $links = array())
     {
         if (!in_array($type, array('success', 'error', 'notice'))) {
             $type = '';
         }
         
-        return "<div class=\"message $type\">$body</div>";
+        $linkstr = '';
+        foreach ((array)$links as $key => $link) {
+            if (isset($link['url']) && !is_null($link['url'])
+                && isset($link['title']) && !is_null($link['title'])) {
+                $linkstr .= "<span><a href='{$link['url']}'>{$link['title']}</a>";
+            }
+        }
+        
+        return "<div class=\"message $type\">$body $linkstr</div>";
     }
 }

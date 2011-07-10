@@ -47,6 +47,12 @@ if (isset($taxon_cats[$entry['category']])) {
     $entry['category_display'] = $entry['category'];
 }
 $entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}";
+
+$ip = Hooto_Util_Ip::getRemoteAddr();
+if (!isset($_COOKIE['tmp.entry'])) {
+    
+}
+
 ?>
 <div class="entry-view">
 

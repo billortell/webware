@@ -37,8 +37,10 @@ $feed = hdata_taxonomy::fetchTerms($where);
   <?php
   $even = 'Even';
   foreach ($feed as $val) { 
+    if (user_session::isLogin($uid)) {
     $even = ($even == 'Even') ? 'Odd' : 'Even';
     $draggAble = 'draggAble'.$even;
+    }
   ?>
   <tr id="term-<?=$val['id']?>" class="<?php echo $draggAble;?>">
    	<td style="padding-left: <?php echo 20 * $val['_level'] + 5;?>px;">
@@ -46,11 +48,12 @@ $feed = hdata_taxonomy::fetchTerms($where);
         <b><?php echo $val['name']?></b>
       </a>
     </td>
-    <td style="padding-left: <?php echo 20 * $val['_level'];?>px;"><b><?php echo $val['weight']?></b></td>
-    <td width="120px">
     <?php
     if (user_session::isLogin($uid)) {
     ?>
+    <td style="padding-left: <?php echo 20 * $val['_level'];?>px;"><b><?php echo $val['weight']?></b></td>
+    <td width="120px">
+    
         <a href="<?=$this->reqs->urlins?>/term-category-edit/?id=<?=$val['id']?>">Edit</a>
         <a href="<?=$this->reqs->urlins?>/term-category-del/?id=<?=$val['id']?>">Delete</a>
     <?php } ?>

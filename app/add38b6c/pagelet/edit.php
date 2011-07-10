@@ -162,7 +162,7 @@ print $msg;
         <div id="summary_auto_title">
           <span class="entry_edit_title">Summary</span> 
           <span> (<a href="javascript:changeAutoSummary(1)">Hide Summary</a>) </span>
-          <span id="summary_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'summary'; openWindow('/media/manage-editorplugin/?target=summary', 'upload', '700', '600')">[Insert Images]</a></span>
+          <span id="summary_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'summary'; openWindow('/hssui/editor-plugin-upload/?target=summary', 'upload', '700', '600')">[Insert Images]</a></span>
         </div>
       </div>
       
@@ -187,7 +187,7 @@ print $msg;
     <div class="entry_edit_left entry_edit_info">
       <span class="entry_edit_title">Content <font color="red">*</font></span> 
       <span id="do-edit-summary"> (<a href="javascript:changeAutoSummary(0)">Edit Summary</a>) </span>
-      <span id="content_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'content'; openWindow('/media/manage-editorplugin/?target=content', 'upload', '700', '600')">[Insert Images]</a></span>
+      <span id="content_media_box" class="hideifnojs"><a href="javascript:;"  onclick="current_media_plugin = 'content'; openWindow('/hssui/editor-plugin-upload/?target=content', 'upload', '700', '600')">[Insert Images]</a></span>
     </div>
     
     <div class="entry_edit_right entry_edit_info">

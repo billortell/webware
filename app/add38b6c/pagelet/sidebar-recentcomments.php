@@ -14,22 +14,24 @@ hdata_entry::setInstance($hdata_instance);
 
 $query  = hdata_entry::select()->where('puid = ?', $puid)
     ->where('pinstance = ?', $hdata_instance_parent)
+    ->where('status > 0')
     ->order('created', 'desc')->limit(10);
 $feed   = hdata_entry::query($query);
 
 ?>
-<div class="sidebarlet">
+<div class="sidebarlet nounderline">
   <h4>Recent Comments</h4>
-  <ul class="nounderline">
-    <?php
-    foreach ($feed as $val) { 
+  <?php
+  foreach ($feed as $val) { 
     $val['content'] = Hooto_Util_Format::summaryPlainText($val['content'], 100);
-    ?>
-    <li>      
-      <a href="<?=$this->reqs->urlins?>/entry?id=<?=$val['pid']?>#<?=$val['id']?>"><b><?=$val['content']?></b></a>
-      <div style="color:#666"><b><?=$val['uname']?></b>@<?php echo date("Y-m-d", strtotime($val['created']));?></div>
-    </li>
-    <?php } ?>
-  </ul>
+  ?>
+  <div class="comments-info">
+    <img src="/_w/img/fffam/comment.png" align="absmiddle" />
+    <b><?=$val['uname']?></b>@<?php echo date("Y-m-d", strtotime($val['created']));?>
+  </div>
+  <div class="comments-summary">
+    <a href="<?=$this->reqs->urlins?>/entry?id=<?=$val['pid']?>#<?=$val['id']?>"><?=$val['content']?></a>
+  </div>
+  <?php } ?>
 </div>
 

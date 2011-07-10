@@ -17,7 +17,9 @@ if (isset($this->reqs->page)) {
     $page = intval($this->reqs->page);
 }
 $page = $page < 1 ? 1 : $page;
-$limitcount = 5;
+if (!isset($limitcount)) {
+    $limitcount = 5;
+}
 
 $query  = hdata_entry::select()
     ->where('uid = ?', $uid)

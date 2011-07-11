@@ -55,7 +55,7 @@ $feed = hdata_taxonomy::fetchTerms($where);
     <td width="120px">
     
         <a href="<?=$this->reqs->urlins?>/term-category-edit/?id=<?=$val['id']?>">Edit</a>
-        <a href="<?=$this->reqs->urlins?>/term-category-del/?id=<?=$val['id']?>">Delete</a>
+        <a href="<?=$this->reqs->urlins?>/term-category-del/?id=<?=$val['id']?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
     <?php } ?>
     </td>
   </tr> 

@@ -120,7 +120,7 @@ foreach ($feed as $entry) {
         </span>
         <?php
         if (isset($entry['href_delete'])) {
-            echo "<span><img src=\"/_w/img/fffam/page_white_delete.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_delete']}\">Delete</a></span>";
+            echo "<span><img src=\"/_w/img/fffam/page_white_delete.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_delete']}\" onclick=\"return confirm('Are you sure you want to delete?')\">Delete</a></span>";
         }
         if (isset($entry['href_edit'])) {
             echo "<span><img src=\"/_w/img/fffam/page_white_edit.png\" align=\"absmiddle\"/> <a href=\"{$entry['href_edit']}\">Edit</a></span>";

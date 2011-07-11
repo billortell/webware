@@ -33,7 +33,7 @@ Hooto_Web_View::headStylesheet('/_w/css/cm.css');
     <div class="info">
       <?=$val['created']?>
       <?php if (1 || isset($val['allowDelete'])) { ?>
-      <a href="<?=$this->reqs->urlins?>/comment-delete/?id=<?=$val['id']?>&url=<?php echo $this->reqs->url?>">Delete</a>
+      <a href="<?=$this->reqs->urlins?>/comment-delete/?id=<?=$val['id']?>&url=<?php echo $this->reqs->url?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
       <?php } ?>
     </div>
   </div>

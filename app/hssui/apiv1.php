@@ -219,27 +219,53 @@ class hssui_apiv1
         // Thumbnail
         if ($size = $this->getImageResize($src, self::RESIZE_THUMBNAIL_KEY)) {
             $size['name'] = 'Thumbnail';
-            $sizes['self::RESIZE_THUMBNAIL_KEY'] = $size;
+            $sizes[self::RESIZE_THUMBNAIL_KEY] = $size;
         }
         
         // Medium
         if ($size = $this->getImageResize($src, self::RESIZE_MEDIUM_KEY)) {
             $size['name'] = 'Medium';
-            $sizes['self::RESIZE_MEDIUM_KEY'] = $size;
+            $sizes[self::RESIZE_MEDIUM_KEY] = $size;
         }
         
         // Large
         if ($size = $this->getImageResize($src, self::RESIZE_LARGE_KEY)) {
             $size['name'] = 'Large';
-            $sizes['self::RESIZE_LARGE_KEY'] = $size;
+            $sizes[self::RESIZE_LARGE_KEY] = $size;
         }
         
         // Full
         if ($size = $this->getImageResize($src, self::RESIZE_FULL_KEY)) {
             $size['name'] = 'Full';
-            $sizes['self::RESIZE_FULL_KEY'] = $size;
+            $sizes['full'] = $size;
         }
 
         return $sizes;
+    }
+    
+    public function deleteFile($src)
+    {
+        if (!file_exists($src)) {
+            return false;
+        } 
+        
+        $im = preg_replace('/(.jpg|.png|.gif)/', '-large.jpg', $src);
+        if (file_exists($im)) {
+            @unlink($im);
+        }
+        
+        $im = preg_replace('/(.jpg|.png|.gif)/', '-medium.jpg', $src);
+        if (file_exists($im)) {
+            @unlink($im);
+        }
+        
+        $im = preg_replace('/(.jpg|.png|.gif)/', '-thumb.jpg', $src);
+        if (file_exists($im)) {
+            @unlink($im);
+        }
+        
+        @unlink($src);
+
+        return true;
     }
 }

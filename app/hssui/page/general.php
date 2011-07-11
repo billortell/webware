@@ -9,15 +9,81 @@
 </head>
 <body>
 
-<div style="height:10px;"></div>
+<div id="bodywrap"><div id="bodycontent">
 
-<ul class="editorPluginNav">
-    <li><a href="/hssui/editor-plugin/" <?php if($this->reqs->act == 'editor-plugin') {echo 'class="current"';}?>>Media Library</a></li>
-    <li><a href="/hssui/editor-plugin-upload/" <?php if(in_array($this->reqs->act, array('editor-plugin-upload'))) {echo 'class="current"';}?>>From Computer</a></li>    
-    <li><a href="javascritp:;" onclick="window.close();">Close</a></li>
-</ul>
+<?php
+$session = user_session::getInstance();
 
+$this->pagelet("header", null, 'w');
+?>
+
+<div id="instance-menu" class="wrapper clearboth">
+  <ul>
+    <?php
+    $conf = Hooto_Config_Array::get($this->reqs->ins.'/global');
+
+    if (isset($conf['menu'])) {
+        $menu = $conf['menu'];
+    } else {
+        $menu = array();
+    }
+
+    $uid = $session->uid;
+
+    foreach ($menu as $key => $val) {
+        
+        if (isset($val['permission'])) {
+        
+            if (!user_session::isLogin()
+                || !user_session::isAllow($this->reqs->ins, $val['permission'])) {
+                continue;
+            }
+        }
+        
+        $link = $this->siteurl('/'.$key, $this->reqs->ins);
+        
+        if ($this->reqs->act == $key) {
+            echo "<li><a href=\"{$link}\" class=\"current\">{$val['title']}</a></li>";
+        } else {
+            echo "<li><a href=\"{$link}\">{$val['title']}</a></li>";
+        }
+    }
+    ?>
+  </ul>
+</div>
+
+<div class="wrapper clearboth">
+<?php
+if ($this->sidebar !== NULL) { 
+?>
+<div class="mainbody-leftbox" style="width:680px;">
 <?php print $this->content; ?>
+</div>
+<div class="mainbody-rightbox" style="width:300px;">
+<?php print $this->sidebar;?>
+</div>
+<?php
+} else {
+    print $this->content;
+}
+?>
+</div>
+
+</div></div>
+
+<div class="centerbox" id="footer">
+  <div class="box">
+  
+    <div class="sl">
+      <p>Based on <b><a href="#">Hooto WebWare</a></b></p>
+    </div>
+
+    <div class="sr">
+      <p id="htdebug"></p>
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>

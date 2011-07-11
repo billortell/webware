@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $cfg = Hooto_Config_Array::get('hssui/global');
         $cfg = new Hooto_Object($cfg['v1']);
 
-        $url = '/hssui/editor-plugin/';
+        $url = '/hssui/list/';
 
         if (!$media->upload(array('uid' => $session->uid), $ret)) {
             throw new Exception($ret['errMsg']);
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'large'
         );
         
-        header("Location: /hssui/editor-plugin?id={$ret['id']}");
+        header("Location: /hssui/list?id={$ret['id']}");
         die();
         
     } catch (Exception $e) {
@@ -56,12 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 echo $msg; 
 ?>
+
+<div class="navindex_title">New File</div>
+
 <div class="editorPluginBody">
-    <b>Add media files from your computer, Choose files to upload</b>
+    <b>Upload files from your computer, Choose files to upload</b>
     
     <br /><br />
     
-    <form id="formMediaUpload" name="formMediaUpload" enctype="multipart/form-data" action="/hssui/editor-plugin-upload" method="post">
+    <form id="formMediaUpload" name="formMediaUpload" enctype="multipart/form-data" action="/hssui/new" method="post">
         <input id="attachment" name="attachment" size="40" type="file" />
   	    <input class="input_button" type="submit" value="Upload" />
     </form>

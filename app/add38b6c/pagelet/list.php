@@ -77,7 +77,7 @@ foreach ($feed as $entry) {
         $entry['tag'] = array();
     }
     
-    $entry['href']  = "{$this->reqs->urlins}/entry?id={$entry['id']}";    
+    $entry['href']  = $this->siteurl("/view?id={$entry['id']}");    
     
     if (strlen($entry['summary_auto']) == 0) {
         $entry['summary'] = Hooto_Util_Format::textHtmlFilter($entry['summary']);
@@ -92,13 +92,13 @@ foreach ($feed as $entry) {
         $entry['category_display'] = $entry['category'];
     }
     
-    $entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}";
+    $entry['href_category']  = $this->siteurl("/index?cat={$entry['category']}");
     
     if (user_session::isAllow($this->reqs->ins, 'entry.edit')) {
-        $entry['href_edit']  = "{$this->reqs->urlins}/edit?id={$entry['id']}";
+        $entry['href_edit']  = $this->siteurl("/edit?id={$entry['id']}");
     }
     if (user_session::isAllow($this->reqs->ins, 'entry.delete')) {
-        $entry['href_delete']  = "{$this->reqs->urlins}/delete?id={$entry['id']}";
+        $entry['href_delete']  = $this->siteurl("/delete?id={$entry['id']}");
     }
 ?>
 <div class="entry-list">
@@ -114,7 +114,7 @@ foreach ($feed as $entry) {
             echo "<span class='term'><img src='/_w/img/fffam/tag_blue.png' align='absmiddle'/> ";
         }
         foreach ($entry['tag'] as $term) {
-            echo "&nbsp;<a href=\"{$this->reqs->urlins}/index?tag={$term}\">{$term}</a>";
+            echo "&nbsp;<a href=\"".$this->siteurl("/index?tag={$term}")."\">{$term}</a>";
         }        
         ?>
         </span>

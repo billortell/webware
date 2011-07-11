@@ -35,10 +35,10 @@ $entry['summary'] = Hooto_Util_Format::summaryPlainText($entry['summary'], 1000)
 $entry['content'] = Hooto_Util_Format::textHtmlFilter($entry['content']);
 
 if (user_session::isAllow($this->reqs->ins, 'entry.edit')) {
-    $entry['href_edit']  = "{$this->reqs->urlins}/edit?id={$entry['id']}";
+    $entry['href_edit']  = $this->siteurl("/edit?id={$entry['id']}");
 }
 if (user_session::isAllow($this->reqs->ins, 'entry.delete')) {
-    $entry['href_delete']  = "{$this->reqs->urlins}/delete?id={$entry['id']}";
+    $entry['href_delete']  = $this->siteurl("/delete?id={$entry['id']}");
 }
 
 if (isset($taxon_cats[$entry['category']])) {
@@ -46,7 +46,7 @@ if (isset($taxon_cats[$entry['category']])) {
 } else {
     $entry['category_display'] = $entry['category'];
 }
-$entry['href_category']  = "{$this->reqs->urlins}/index?cat={$entry['category']}";
+$entry['href_category']  = $this->siteurl("/index?cat={$entry['category']}");
 
 $ip = Hooto_Util_Ip::getRemoteAddr();
 if (!isset($_COOKIE['tmp.entry'])) {

@@ -74,5 +74,5 @@ try {
 echo $msg;
 ?>
 
-<a href="<?=$this->reqs->urlins?>/term-category/">Go Back</a>
+<a href="<?=$this->siteurl("/term-category/")?>">Go Back</a>
 

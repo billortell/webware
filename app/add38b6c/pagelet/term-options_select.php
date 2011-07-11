@@ -44,7 +44,7 @@ $feed = hdata_taxonomy::fetchTerms($where);
   ?>
   <tr id="term-<?=$val['id']?>" class="<?php echo $draggAble;?>">
    	<td style="padding-left: <?php echo 20 * $val['_level'] + 5;?>px;">
-      <a href="<?=$this->reqs->urlins?>/index?cat=<?=$val['id']?>">
+      <a href="<?=$this->siteurl("/index?cat={$val['id']}")?>">
         <b><?php echo $val['name']?></b>
       </a>
     </td>
@@ -54,8 +54,8 @@ $feed = hdata_taxonomy::fetchTerms($where);
     <td style="padding-left: <?php echo 20 * $val['_level'];?>px;"><b><?php echo $val['weight']?></b></td>
     <td width="120px">
     
-        <a href="<?=$this->reqs->urlins?>/term-category-edit/?id=<?=$val['id']?>">Edit</a>
-        <a href="<?=$this->reqs->urlins?>/term-category-del/?id=<?=$val['id']?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+        <a href="<?=$this->siteurl("/term-category-edit/?id={$val['id']}")?>">Edit</a>
+        <a href="<?=$this->siteurl("/term-category-del/?id={$val['id']}")?>" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
     <?php } ?>
     </td>
   </tr> 
@@ -67,5 +67,5 @@ $feed = hdata_taxonomy::fetchTerms($where);
 <?php
 if (user_session::isLogin($uid)) {
 ?>
-<a class="abutton" href="<?=$this->reqs->urlins?>/term-category-edit/?id=0">New Term</a>
+<a class="abutton" href="<?=$this->siteurl("/term-category-edit/?id=0")?>">New Term</a>
 <?php } ?>

@@ -107,7 +107,7 @@ echo $msg;
 <fieldset class="contentbox">
 <legend><?php echo ($this->reqs->id == 0) ? 'New Term' : 'Term Edit';?></legend>
 <div class="clearhr"></div>
-<form id="general_form" name="general_form" action="<?=$this->reqs->urlins?>/term-category-edit/" method="post" >
+<form id="general_form" name="general_form" action="<?=$this->siteurl("/term-category-edit/")?>" method="post" >
 <input name="id" type="hidden" value="<?=$entry['id']?>" />
 <table class="table_edit" width="100%" cellspacing="0">
 
@@ -141,7 +141,7 @@ echo $msg;
     <td></td>
     <td>
       <input type="submit" name="submit" value="Save" />
-      <a href="<?=$this->reqs->urlins?>/term-category/">Go Back</a>
+      <a href="<?=$this->siteurl("/term-category/")?>">Go Back</a>
     </td>
   </tr>
 

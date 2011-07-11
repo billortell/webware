@@ -30,7 +30,7 @@ $feed   = hdata_entry::query($query);
     <b><?=$val['uname']?></b>@<?php echo date("Y-m-d", strtotime($val['created']));?>
   </div>
   <div class="comments-summary">
-    <a href="<?=$this->reqs->urlins?>/entry?id=<?=$val['pid']?>#<?=$val['id']?>"><?=$val['content']?></a>
+    <a href="<?=$this->siteurl("/view?id={$val['pid']}#{$val['id']}")?>"><?=$val['content']?></a>
   </div>
   <?php } ?>
 </div>

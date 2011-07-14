@@ -104,10 +104,8 @@ class user_session_instance
     // TODO
     public function __construct()
     {
-        if (isset($_SESSION['sid'])) {
-            $sid = trim($_SESSION['sid']);
-        } else if (isset($_COOKIE['sid'])) {
-            $sid = trim($_COOKIE['sid']);
+        if (isset($_COOKIE['access_token'])) {
+            $sid = trim($_COOKIE['access_token']);
         } else {
             $sid = null;
         }

@@ -10,11 +10,11 @@ if (!isset($this->reqs->instance)) {
 }
 $instance = $this->reqs->instance;
 
-if (!file_exists(SYS_ROOT."conf/{$this->reqs->instance}/global.php")) {
+if (!file_exists(SYS_ROOT."conf/".SITE_NAME."/{$this->reqs->instance}/global.php")) {
     print w_msg::simple('error', 'Access Denied');
     return;
 }
-$cins = require SYS_ROOT."conf/{$this->reqs->instance}/global.php";
+$cins = require SYS_ROOT."conf/".SITE_NAME."/{$this->reqs->instance}/global.php";
 
 
 $session = user_session::getInstance();

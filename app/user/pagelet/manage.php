@@ -79,7 +79,7 @@ $q = $_apps->select()->where('uid = ?', $session->uid)->limit(100);
 $apps = $_apps->query($q);
 
 
-$patt = SYS_ROOT.'conf/*';
+$patt = SYS_ROOT.'conf/'.SITE_NAME.'/*';
     
 $myProducts = "";
 $tryProducts = "";

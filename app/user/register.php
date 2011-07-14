@@ -90,6 +90,7 @@ class user_register
         try {
 
             $_user = Hooto_Data_Sql::getTable('user');
+            $_profile = Hooto_Data_Sql::getTable('user_profile');
             
             $uid   = uname2uid($params->uname);
             $user = $_user->fetch($uid);
@@ -100,7 +101,7 @@ class user_register
             
             $pass = md5($params->pass);
 
-            $user = array(
+            $set = array(
                 'id'   => $uid,
                 'uname' => $params->uname,
                 'name'  => $params->uname,
@@ -110,7 +111,17 @@ class user_register
                 'updated' => $_SERVER['REQUEST_TIME'],
             );
         
-            $_user->insert($user);
+            $_user->insert($set);
+            
+            $set = array(
+                'id'   => $uid,
+                'uname' => $params->uname,
+                'name'  => $params->uname,
+                'sitename' => $params->uname."'s site",
+                'created' => $_SERVER['REQUEST_TIME'],
+                'updated' => $_SERVER['REQUEST_TIME'],
+            );
+            $_profile->insert($set);
             
         } catch (Exception $e) {
             throw $e;

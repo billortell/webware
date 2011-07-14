@@ -32,6 +32,7 @@ if (preg_match('#^(.+)/profile/(.+)$#i', $this->reqs->uri, $regs)) {
         $pf = $_profile->fetch($uid);
         if (isset($pf['id'])) {
             $content = Hooto_Util_Format::textHtmlFilter($pf['content']);
+            $this->headtitle = "{$pf['name']} | Profile";
         } else {
             $content = 'No Profile Found';
             print w_msg::simple('error', 'Profile not found');

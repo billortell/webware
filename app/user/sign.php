@@ -99,18 +99,15 @@ class user_sign
             throw $e;
         }
         
-        $_SESSION['sid'] = $sid;
-        $_SESSION['uid'] = $user['id'];
-        setcookie("sid", $sid, $timeout, '/');
-        setcookie("uid", $user['id'], $timeout, '/');
+        //setcookie("sid", $sid, $timeout, '/');
+        setcookie("access_token", $sid, $timeout, '/');
+        registry("access_token", $sid);
     }
     
     public function out()
     {
-        if (isset($_SESSION['sid'])) {
-            $sid = $_SESSION['sid'];
-        } else if (isset($_COOKIE['sid'])) {
-            $sid = $_COOKIE['sid'];
+        if (isset($_COOKIE['access_token'])) {
+            $sid = $_COOKIE['access_token'];
         } else {
             $sid = null;
         }
@@ -124,7 +121,7 @@ class user_sign
             }
         }
         
-        setcookie("sid", '', 1, '/');
+        //setcookie("sid", '', 1, '/');
         setcookie("uid", '', 1, '/');
         @session_destroy();
     } 

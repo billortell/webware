@@ -3,11 +3,9 @@ Hooto_Web_View::headStylesheet('/_user/css/sign.css');
 
 $msg = null;
 if (isset($_REQUEST['cburl']) && strlen($_REQUEST['cburl']) > 10) {
-    echo "<div><a href=\"{$_REQUEST['cburl']}\">Go Back</a></div>";
     $cburl = strip_tags($_REQUEST['cburl']);
 } else {
-    echo "<div><a href=\"javascript:history.go(-1)\">Go Back</a></div>";
-    $cburl = '';
+    $cburl = '/';
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -23,16 +21,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         user_sign::in($params);
 
         if (strlen($cburl) > 1) {
-            header('Location: '.$cburl);die();
+            //header('Location: '.$cburl);die();
         } else {
-            header('Location: /user/manage/');die();
+            //header('Location: /user/manage/');die();
+            $cburl = '/user/manage/';
         }
+        
+        /** $pu = parse_url($cburl);        
+        if ($pu['host'] != $_SERVER['HTTP_HOST']) {
+                   
+            if (!preg_match("/\?/i", $cburl)) {
+                $cburl .= '?';
+            }
+            
+            $cburl .= "&.access_token=".$_COOKIE['sid'];
+        }*/
+        
+        $go = "<html><head><title>redirecting</title></head><body>";
+        $cfg = Hooto_Config_Array::get("user/global");
+        if (isset($cfg['cookie_domain'])) {
+            $access_token = registry("access_token");
+            $expire = time() + 864000;
+            foreach ($cfg['cookie_domain'] as $v) {
+                $go .= "<script src=\"http://{$v}/setcookie.php?access_token={$access_token}&expire={$expire}\"></script>\n";
+            }
+        }
+        
+        $go .= '
+        <div><b>Sign-on system success. Page redirecting</b> ... <a href=\"'.$cburl.'\">Goto</a></div>
+        <script language="javascript">
+        function reback() {
+            top.location="'.$cburl.'";
+        }
+        window.setInterval(reback,3000);
+        </script>
+        <body></html>';
+        
+        echo $go;
+        die();
             
     } catch (Exception $e) {
         
         $msg = w_msg::simple('error', $e->getMessage());
     }
 }
+
+echo "<div><a href=\"{$cburl}\">Go Back</a></div>";
 
 if ($msg === null) {
     $msg = w_msg::simple('notice', 'Please enter your user name and password');
@@ -61,7 +95,7 @@ if ($msg === null) {
       <td align="right"></td>
       <td>
         <input type="checkbox" id="persistent" name="persistent" value="1" checked="1" /> 
-        Stay signed in <br />(Uncheck if on a shared computer)      
+        Stay signed in <br />(Uncheck if on a shared computer)
       </td>
     </tr>
     <tr>

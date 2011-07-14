@@ -5,6 +5,7 @@ if (!isset($hdata_instance)) {
     return;
 }
 hdata_entry::setInstance($hdata_instance);
+$this->headtitle = "Categories | {$this->headtitle}";
 
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
 

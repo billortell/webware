@@ -5,6 +5,7 @@ if (!isset($hdata_instance)) {
     return;
 }
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
+$this->headtitle = "Archives | {$this->headtitle}";
 
 $uid = uname2uid($this->reqs->uname);
 
@@ -29,9 +30,8 @@ foreach ((array)$ret as $val) {
     $val['month'] = sprintf("%02d", $val['month']); 
     $feed[$val['year']][$val['month']] = $val;
 }
-?>
 
-<?php 
+
 $url = $this->siteurl("/index?date=", $this->reqs->ins);
 foreach ($feed as $year => $archives): ?>
 <div class="entry-archives">

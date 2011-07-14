@@ -20,6 +20,9 @@ $page = $page < 1 ? 1 : $page;
 if (!isset($limitcount)) {
     $limitcount = 5;
 }
+if ($page > 1) {
+    $this->headtitle .= " | Page $page";
+}
 
 $query  = hdata_entry::select()
     ->where('uid = ?', $uid)

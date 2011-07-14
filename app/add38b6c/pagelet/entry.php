@@ -53,6 +53,7 @@ if (!isset($_COOKIE['tmp.entry'])) {
     
 }
 
+$this->registry("headtitle", $entry['title']);
 ?>
 <div class="entry-view">
 
@@ -72,9 +73,10 @@ if (!isset($_COOKIE['tmp.entry'])) {
           ?>
           <div>
             <img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 
-            <?php foreach ((array)$entry['tag'] as $term): ?> 
-            <span><a href="#<?=$term?>"><?=$term?></a></span>
-            <?php endforeach; ?>
+            <?php
+            foreach ((array)$entry['tag'] as $term) {
+                echo "<span><a href='".$this->siteurl("/index?tag={$term}")."'>{$term}</a></span>";
+            }?>
           </div>
         <?php } ?>
         </td>
@@ -119,9 +121,11 @@ if (!isset($_COOKIE['tmp.entry'])) {
   ?>
   <div class="clear_both">
      <span class="term"><img src="/_w/img/fffam/tag_blue.png"  align="absmiddle"/> Tags: 
-     <?php foreach ((array)$entry['tag'] as $term): ?> 
-     &nbsp;&nbsp;<a href="#<?=$term?>"><?=$term?></a>
-     <?php endforeach; ?></span>
+     <?php
+     foreach ((array)$entry['tag'] as $term) {
+        echo "&nbsp;&nbsp;<a href='".$this->siteurl("/index?tag={$term}")."'>{$term}</a>";
+     }
+     ?></span>
   </div>
   <?php } ?>
 </div>

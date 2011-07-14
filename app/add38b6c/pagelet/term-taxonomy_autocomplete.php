@@ -7,6 +7,7 @@ if (!isset($hdata_instance)) {
 hdata_entry::setInstance($hdata_instance);
 
 Hooto_Web_View::headStylesheet('/_w/css/cm.css');
+$this->headtitle = "Tags | {$this->headtitle}";
 
 $metadata = Hooto_Config_Array::get("hdata/entry{$hdata_instance}");
 

@@ -99,10 +99,10 @@ echo $msg;
 	<tr>
 	    <td></td>
 	    <td><b>Name</b></td>
-        <td><b>Type</b></td>
-		<td align="right"><b>Size</b></td>
-		<td align="right"><b>Created</b></td>
-		<td align="right"></td>
+        <td  width="40px"><b>Type</b></td>
+		<td align="right" width="60px"><b>Size</b></td>
+		<td align="right" width="160px"><b>Created</b></td>
+		<td align="right" width="100px"></td>
 	</tr>
     <?php 
     $even = 'Even';
@@ -126,7 +126,7 @@ echo $msg;
                 <div>
                     <?php foreach ($item['resizes'] as $key => $val) { ?>
                     <span>
-                        <b><?=$val['name']?></b>: <?=$val['width']?>x<?=$val['height']?> <a href="<?=$item['srcweb']?>&style=<?=$key?>" target="_blank">link</a> 
+                        <b><?=$val['name']?></b>: <?=$val['width']?>x<?=$val['height']?>(px) <a href="<?=$item['srcweb']?>&style=<?=$key?>" target="_blank">link</a><br /> 
                     </span>
                     <?php } ?>
                 <?php } ?>

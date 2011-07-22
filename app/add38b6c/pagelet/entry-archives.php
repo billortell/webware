@@ -21,8 +21,10 @@ $query  = hdata_entry::select($cols)
 
 if (!user_session::isLogin($uid)) {
     $query->where('status = ?', add38b6c_entry::STATUS_PUBLISH);
+} else {
+    $query->where('status > ?', 0);
 }
-       
+
 $ret = hdata_entry::query($query);
 
 $feed = array();

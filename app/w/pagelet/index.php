@@ -120,7 +120,7 @@ debugAction();
             $entry->comment = $val['allow_comment'];
             
             // PIN
-            hdata_entry::replaceEntry($entry);
+            //hdata_entry::replaceEntry($entry);
             
         }
     
@@ -150,7 +150,7 @@ debugAction();
 
             try {
                 // PIN
-                $dbentry->update($set, array('id' => $val['nodeid']));
+                //$dbentry->update($set, array('id' => $val['nodeid']));
             } catch (Exception $e) {
                 $counter++;
             }
@@ -210,7 +210,7 @@ debugAction();
 
             try {
                 // PIN
-                $dbcomment->insert($set);
+                //$dbcomment->insert($set);
             } catch (Exception $e) {
                 $counter++;
             }
@@ -239,7 +239,7 @@ debugAction();
                 'updated' => strtotime($val['modified'])
             );
             // PIN
-            $dbuser->insert($set);
+            //$dbuser->insert($set);
 
             
             $set = array('id' => $uid,
@@ -254,7 +254,7 @@ debugAction();
                 'updated' => strtotime($val['modified'])
             );
             // PIN
-            $dbuserp->insert($set);
+            //$dbuserp->insert($set);
         }
         
         $dbuserapps = Core_Dao::factory(array('name' => 'user_apps'));
@@ -269,7 +269,7 @@ debugAction();
                 'title' => $val['name'],
             );
             // PIN
-            $dbuserapps->insert($set);
+            //$dbuserapps->insert($set);
 
             
             $set = array(
@@ -281,7 +281,28 @@ debugAction();
                 'title' => $val['name'],
             );
             // PIN
-            $dbmenulink->insert($set);
+            //$dbmenulink->insert($set);
+        }
+        
+        $dbhss1 = Core_Dao::factory(array('name' => 'hss1'));
+        $rs = $dbsrc->query("SELECT * from kit_media ORDER BY mediaid LIMIT 99999")->fetchAll();
+        foreach ($rs as $val) {
+
+            $set = array(
+                'id'            => $val['mediaid'],
+                'uid'           => isset($user_map[$val['userid']]) ? $user_map[$val['userid']] : '0',
+                'media_dir'     => $val['media_dir'],
+                'media_name'    => $val['media_name'],
+                'media_stored'  => $val['media_stored'],
+                'media_ext'     => $val['media_ext'],
+                'media_size'    => $val['media_size'],
+                'media_mime'    => $val['media_mime'],
+                'created'       => $val['created'],
+                'updated'       => $val['modified'],
+            );
+
+            // PIN
+            $dbhss1->insert($set);
         }
         
         return;

@@ -2,6 +2,7 @@
 defined('SYS_ROOT') or die('Access Denied!');
 
 $config['perms'] = array(
+    'islogin' => array('title' => ''),
     'list' => array('title' => ''),
     'delete' => array('title' => ''),
     'new' => array('title' => ''),

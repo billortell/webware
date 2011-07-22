@@ -19,7 +19,7 @@ $feed   = hdata_entry::query($query);
   <ul>
     <?php
     foreach ($feed as $val) {
-    $link = $this->siteurl("/entry?id={$val['id']}", $this->reqs->ins);
+    $link = $this->siteurl("/view/{$val['id']}.html", $this->reqs->ins);
     ?>
     <li>
       <a href="<?=$link?>"><b><?=$val['title']?></b></a>

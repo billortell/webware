@@ -41,7 +41,7 @@ foreach ($ret as $val) {
     $entry = $feed->createEntry();
     
     $entry->setTitle(htmlspecialchars($val['title']));
-    $entry->setLink($this->siteurl('/entry/?id='.$val['id'], $this->reqs->ins));
+    $entry->setLink($this->siteurl("/view/{$val['id']}.html", $this->reqs->ins));
     $entry->addAuthor(array('name'  => $val['uname']));
     $entry->setDateModified(strtotime($val['updated']));
     $entry->setDateCreated(strtotime($val['created']));

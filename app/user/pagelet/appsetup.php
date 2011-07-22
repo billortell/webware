@@ -15,6 +15,7 @@ if (!file_exists(SYS_ROOT."conf/".SITE_NAME."/{$this->reqs->instance}/global.php
     return;
 }
 $cins = require SYS_ROOT."conf/".SITE_NAME."/{$this->reqs->instance}/global.php";
+$menu_title = $cins['menu_nav']['title'];
 
 
 $session = user_session::getInstance();
@@ -42,9 +43,10 @@ $q = $_apps->select()
 $apps = $_apps->query($q);
 if (count($apps) > 0 && isset($apps[0]['id'])) {
     $app = $apps[0];
-    $cins['name'] = $app['title'];
+    $menu_title = $app['title'];
 } else {
     $app = null;
+    
 }
         
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -83,6 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (isset($cins['permission'])) {
             $set['permission'] = $cins['permission'];
+        } else if (isset($cins['menu_nav']['permission'])) {
+            $set['permission'] = $cins['menu_nav']['permission'];
         }
 
         if (count($menu) == 0) {
@@ -117,7 +121,7 @@ echo $msg;
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
       <td width="200px" align="right" >NAME</td>
-      <td ><input id="title" name="title" type="text" size="30" value="<?php echo $cins['name']?>" /></td>
+      <td ><input id="title" name="title" type="text" size="30" value="<?php echo $menu_title?>" /></td>
     </tr>
     <tr>
       <td></td>

@@ -80,7 +80,7 @@ foreach ($feed as $entry) {
         $entry['tag'] = array();
     }
     
-    $entry['href']  = $this->siteurl("/view?id={$entry['id']}");    
+    $entry['href']  = $this->siteurl("/view/{$entry['id']}.html");
     
     if (strlen($entry['summary_auto']) == 0) {
         $entry['summary'] = Hooto_Util_Format::textHtmlFilter($entry['summary']);

@@ -1,10 +1,16 @@
 <?php
 
+if (!preg_match("#^(.*)view/(.*)\.html#i", $this->reqs->uri, $regs)) {
+    return;
+}
+
+$this->reqs->id = $regs[2];
+
+
 if (!isset($hdata_instance)) {
     return;
 }
 $session = user_session::getInstance();
-
 
 hdata_entry::setInstance($hdata_instance);
 
@@ -53,7 +59,7 @@ if (!isset($_COOKIE['tmp.entry'])) {
     
 }
 
-$this->registry("headtitle", $entry['title']);
+$this->headtitle = $entry['title'];
 ?>
 <div class="entry-view">
 

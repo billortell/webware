@@ -57,7 +57,7 @@ class hcaptcha_image
         $this->fontPath = SYS_ROOT .'/app/hcaptcha/fonts/coolveti/coolveti.ttf';
         //$this->fontPath = SYS_ROOT .'/app/hcaptcha/fonts/ttf-lyx/cmr10.ttf';
         
-        $this->imageDir = SYS_ROOT .'/pub/data/captcha';
+        $this->imageDir = SYS_ROOT .'/data/captcha';
         //$this->db = new Kit_Db_Table_Verifycode();
     }
     

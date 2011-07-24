@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['id']   = 'add38b6c';
+$config['id']   = 'jm42iwaf';
 $config['name'] = 'Hooto Blog';
 $config['summary'] = 'Hooto Blog';
 

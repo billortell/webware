@@ -7,11 +7,11 @@ if (!isset($this->reqs->instance)) {
 }
 $instance = $this->reqs->instance;
 
-if (!file_exists(SYS_ROOT."/conf/{$instance}/global.php")) {
+if (!file_exists(SYS_ROOT."/conf/".SITE_NAME."/{$instance}/global.php")) {
     return;// TODO
 }
 
-$cfg = require SYS_ROOT."/conf/{$instance}/global.php";
+$cfg = require SYS_ROOT."/conf/".SITE_NAME."/{$instance}/global.php";
 
 $initperms = require SYS_ROOT."/app/{$cfg['appid']}/permission.php";
 

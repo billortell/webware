@@ -20,7 +20,7 @@ $query  = hdata_entry::select($cols)
     ->limit(100000);
 
 if (!user_session::isLogin($uid)) {
-    $query->where('status = ?', add38b6c_entry::STATUS_PUBLISH);
+    $query->where('status = ?', jm42iwaf_entry::STATUS_PUBLISH);
 } else {
     $query->where('status > ?', 0);
 }

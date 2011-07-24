@@ -22,7 +22,7 @@ try {
 
 $query = hdata_entry::select()
     ->where('uid = ?', $uid)
-    ->where('status = ?', add38b6c_entry::STATUS_PUBLISH)
+    ->where('status = ?', jm42iwaf_entry::STATUS_PUBLISH)
     ->order('created', 'desc')
     ->limit(20);
 $ret = hdata_entry::query($query);

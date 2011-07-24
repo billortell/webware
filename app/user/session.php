@@ -49,7 +49,7 @@ final class user_session
     }
     
     //
-    public function isLogin($uid = '0')
+    public static function isLogin($uid = '0')
     {
         if ($uid == '0') {
             return (self::getInstance()->uid != '0' ? true : false);

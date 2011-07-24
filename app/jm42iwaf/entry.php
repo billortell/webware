@@ -3,7 +3,7 @@
 defined('SYS_ROOT') or die('Access Denied!');
 
 
-class add38b6c_entry
+class jm42iwaf_entry
 {
     const STATUS_PUBLISH = 1;
     const STATUS_DRAFT   = 2;

@@ -24,12 +24,12 @@ $entry->updated = date("Y-m-d H:i:s");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (add38b6c_entry::isValid($entry, $msgstr)) {
+    if (jm42iwaf_entry::isValid($entry, $msgstr)) {
         
         try {
         
             if (!isset($entry->id) || strlen($entry->id) < 1) {
-                $entry->id = Core_Util_Uuid::create();
+                $entry->id = hwl_string::rand(12);
             }
             
             //print_r($entry);die();

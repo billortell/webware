@@ -7,7 +7,7 @@
 </tr>
 
 <?php
-$patt = SYS_ROOT.'conf/*';
+$patt = SYS_ROOT.'conf/'.SITE_NAME.'/*';
     
 $arr = array();
 foreach (glob($patt, GLOB_ONLYDIR) as $st) {

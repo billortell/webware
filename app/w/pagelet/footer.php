@@ -6,7 +6,8 @@
     </div>
 
     <div class="sr">
-      <p id="htdebug"></p>
+      <p>Page rendered in <?php echo round((microtime(true) - START_TIME), 5) * 1000 ?> ms, 
+      taking <?php echo round((memory_get_usage() - START_MEMORY_USAGE) / 1024, 2)?> KB</p>
     </div>
 
   </div>

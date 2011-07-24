@@ -1,4 +1,6 @@
 <?php
+
+print_r($_SERVER);
 phpinfo();  // by zhaoqi
 
 echo "<pre>"; 

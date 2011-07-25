@@ -284,7 +284,7 @@ debugAction();
             //$dbmenulink->insert($set);
         }
         
-        $dbhss1 = Core_Dao::factory(array('name' => 'hss1'));
+        $dbhss_v1 = Core_Dao::factory(array('name' => 'hss_v1'));
         $rs = $dbsrc->query("SELECT * from kit_media ORDER BY mediaid LIMIT 99999")->fetchAll();
         foreach ($rs as $val) {
 
@@ -302,7 +302,7 @@ debugAction();
             );
 
             // PIN
-            $dbhss1->insert($set);
+            $dbhss_v1->insert($set);
         }
         
         return;

@@ -54,9 +54,10 @@ if (isset($taxon_cats[$entry['category']])) {
 }
 $entry['href_category']  = $this->siteurl("/index?cat={$entry['category']}");
 
-$ip = Hooto_Util_Ip::getRemoteAddr();
-if (!isset($_COOKIE['tmp.entry'])) {
-    
+//$ip = Hooto_Util_Ip::getRemoteAddr();
+if (true) {
+    $set = array('id' => $entry['id'], 'stat_access' => $entry['stat_access'] + 1);
+    hdata_entry::replaceEntry($set);
 }
 
 $this->headtitle = $entry['title'];

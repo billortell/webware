@@ -14,7 +14,7 @@ $limitcount = 10;
 
 $pageurl = '/hssui/editor-plugin/';
 
-$_media = Hooto_Data_Sql::getTable('hss1');
+$_media = Hooto_Data_Sql::getTable('hss_v1');
 
 $query = $_media->select()
     ->where('uid = ?', $session->uid)

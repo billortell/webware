@@ -1,5 +1,7 @@
 The third party software of this product includes:
 
+* MicroMVC (http://micromvc.com/)
+    LICENSE http://www.opensource.org/licenses/mit-license.php MIT
 
 * Zend Framework (http://framework.zend.com)
     LICENSE http://framework.zend.com/license/new-bsd  New BSD License

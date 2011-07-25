@@ -37,10 +37,11 @@ $feed = hdata_taxonomy::fetchTerms($where);
   <tbody>
   <?php
   $even = 'Even';
-  foreach ($feed as $val) { 
+  foreach ($feed as $val) {
+    $draggAble = '';
     if (user_session::isLogin($uid)) {
-    $even = ($even == 'Even') ? 'Odd' : 'Even';
-    $draggAble = 'draggAble'.$even;
+        $even = ($even == 'Even') ? 'Odd' : 'Even';
+        $draggAble = 'draggAble'.$even;
     }
   ?>
   <tr id="term-<?=$val['id']?>" class="<?php echo $draggAble;?>">

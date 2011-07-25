@@ -15,7 +15,7 @@ $limitcount = 20;
 $cfg = Hooto_Config_Array::get('hssui/global');
 $cfg = new Hooto_Object($cfg['v1']);
 
-$_media = Hooto_Data_Sql::getTable('hss1');
+$_media = Hooto_Data_Sql::getTable('hss_v1');
 
 $apiv1 = new hssui_apiv1();
 

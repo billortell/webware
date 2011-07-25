@@ -139,7 +139,7 @@ class hssui_apiv1
             }
             @chmod($mediaStoredDir, 0604);
             
-            $_media = Hooto_Data_Sql::getTable('hss1');
+            $_media = Hooto_Data_Sql::getTable('hss_v1');
             
             $data = array(
                 'uid'           => $uid,

@@ -7,7 +7,7 @@ if (!isset($this->reqs->id) || $this->reqs->id == 0) {
     return false;
 }
 
-$_media = Hooto_Data_Sql::getTable('hss1');
+$_media = Hooto_Data_Sql::getTable('hss_v1');
 
 $item = $_media->fetch($this->reqs->id);
 

@@ -86,6 +86,9 @@ function h($data) {
 function registry($k,$v=NULL) {
 	static$o;return(func_num_args()>1?$o[$k]=$v:(isset($o[$k])?$o[$k]:NULL));	
 }
+function url($k = NULL, $d = NULL) {
+	static$s;if(!$s){foreach(array('REQUEST_URI','PATH_INFO','ORIG_PATH_INFO')as$v){preg_match('/^\/[\w\-~\/\.+%]{1,600}/',server($v),$p);if(!empty($p)){$s=explode('/',trim($p[0],'/'));break;}}}if($s)return($k!==NULL?(isset($s[$k])?$s[$k]:$d):implode('/',$s));
+}
 
 class Hooto_Object {
     public function __construct($array = null) {
@@ -110,7 +113,7 @@ function uname2uid($uname) {
 
 //echo hwl_string::random_characters(8, 2);
 
-
+//print_r(url());return;
 /** Sites Routing */
 $h = h(server('SERVER_NAME')?server('HTTP_HOST'):server('SERVER_NAME'));
 //$cfgs = Hooto_Config_Array::get('sites');
@@ -127,28 +130,27 @@ if (isset($cfgs['hook_pre'])) {
  * Routing
  */
 $cg = Hooto_Config_Array::get('global');
-//print_r($cg);
+// print_r($cg);
 $reqs = new Hooto_Web_Request();//print_r($reqs);//print_r($_SERVER);
 if (isset($cg['routes'])) {
     $reqs->router($cg['routes']);
 } //print_r($reqs);
-
 
 /**
  * database api
  */
 Hooto_Data_Sql::set('def', $cg['data']['def']);
 
-/**
- * Init
- */
+/** Init */
 if (file_exists(SYS_ROOT."app/{$reqs->app}/func.php")) {
     require_once SYS_ROOT."app/{$reqs->app}/func.php";
 }
 
-/**
- * views
- */
+if (list($u, $i, $a) = array_slice(array('a','b','c','d'), 0)) {
+    echo 'OK';
+}
+
+/** views */
 $view = new Hooto_Web_View();
 $view->reqs = $reqs;
 $view->setPath(SYS_ROOT."app/{$reqs->app}");

@@ -18,7 +18,7 @@ if (isset($this->reqs->page)) {
 }
 $page = $page < 1 ? 1 : $page;
 if (!isset($limitcount)) {
-    $limitcount = 5;
+    $limitcount = 10;
 }
 if ($page > 1) {
     $this->headtitle .= " | Page $page";

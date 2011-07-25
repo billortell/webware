@@ -80,7 +80,7 @@ class user_sign
             throw new Exception('Username and pass do not match');
         }
 
-        $sid = Core_Util_Uuid::create();
+        $sid = hwl_string::rand(32);
         $timeout = $_SERVER['REQUEST_TIME'] + 864000;  
         $data = array('id' => $sid,
             'uid'    => $user['id'],
@@ -112,7 +112,7 @@ class user_sign
             $sid = null;
         }
 
-        if (strlen($sid) == 36) {
+        if (strlen($sid)) {
             try {
                 $_session = Hooto_Data_Sql::getTable('session');
                 $_session->delete($sid);
@@ -121,8 +121,8 @@ class user_sign
             }
         }
         
-        //setcookie("sid", '', 1, '/');
-        setcookie("uid", '', 1, '/');
+        setcookie("sid", '', 1, '/');
+        //setcookie("uid", '', 1, '/');
         @session_destroy();
     } 
 }

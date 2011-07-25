@@ -6,7 +6,7 @@ $message = null;
 if (isset($_REQUEST['cburl']) && strlen($_REQUEST['cburl']) > 10) {
     $goback = "<div><a href=\"{$_REQUEST['cburl']}\">Go Back</a></div>";
 } else {
-    $goback = "<div><a href=\"javascript:history.go(-1)\">Go Back</a></div>";
+    $goback = "<div><a href=\"/\">Go Back</a></div>";
 }
         
 try {

@@ -30,13 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $item->instance = $hdata_instance;
             
         if ($item->id == "") {
-            $item->id = Core_Util_Uuid::create(); 
-            //print_r($entry);
-            //$db->insert($entry);
+            $item->id = hwl_string::rand(12);
         } else {
             unset($item->created);
         }
-        //print_r($entry);
         hdata_entry::replaceEntry($item);
             
         $msg = w_msg::simple('success', 'Success', $links);

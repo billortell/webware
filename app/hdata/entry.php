@@ -71,6 +71,7 @@ class hdata_entry
     public static function replaceEntry($entry)
     {
         $id = self::$metadata['entry']['primary'];
+        $entry = (object)$entry;
         if (!isset($entry->{$id})) {
             return false;
         }

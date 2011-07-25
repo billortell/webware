@@ -1,39 +1,13 @@
-blog
+1.1 hwc
+1.2 hdata
+1.3 bookmark/photo
 
-    manage list (->)
-    comments pager (->)
-    comments edit (->)
-    
-    nav-friendly (?)
+---------------
+default router(home)
 
-fs (OK)
-
-----------------
 siteurl/user-siteurl(.5)
-
-SEO (.5)
-
-ID,fix (.5)
-
-hook (1)
 
 user-block
 
-Exception (.5)
-
-hooto-portal (.5)
-
 Bookmark
-
-
-NEW THEME
-default router(home)
-
----------------
-
-gphoto(->)
-
-online(->)
-
-webware(->)
 

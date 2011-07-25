@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 		$media = new hssui_apiv1();
 		$image = new Hooto_Util_Image();
-        $_media = Hooto_Data_Sql::getTable('hss1');
+        $_media = Hooto_Data_Sql::getTable('hss_v1');
         
         $cfg = Hooto_Config_Array::get('hssui/global');
         $cfg = new Hooto_Object($cfg['v1']);

@@ -20,6 +20,9 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
 
+//header("HTTP/1.1 503 Service Unavailable");
+//die("<h1>This site is down for maintenance. Please check back again soon.</h1>");
+
 define('START_TIME', microtime(true));
 define('START_MEMORY_USAGE', memory_get_usage());
 

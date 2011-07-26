@@ -68,7 +68,7 @@ if (count($ret) > 0) {
 }
 
 ?>
-<form id="form-instance-permission" name="form-instance-permission" action="/hww/instance-permission" method="post">
+<form id="form-instance-permission" name="form-instance-permission" action="/hwc/instance-permission" method="post">
 <input id="instance" name="instance" type="hidden" value="<?=$instance?>" />
 
 <table class="table_list">

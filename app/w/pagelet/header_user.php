@@ -57,6 +57,7 @@ $this->headtitle = $is->sitename;
     <ul>
     <?php
     $menus = user_menu::getList(4, $uid);
+    //print_r($menus);
     foreach ($menus as $val) {
         if (strlen($val['permission']) 
             && !user_session::isAllow($val['instance'], $val['permission'])) {

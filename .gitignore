@@ -3,7 +3,6 @@ test.php
 _*/
 data/
 conf/
-lib/
 app/Zend
 app/Core
 app/Font

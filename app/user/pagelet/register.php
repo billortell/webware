@@ -71,6 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <td align="right"></td>
       <td><input type="submit" value="Sign up" class="input_button" /></td>
     </tr>
+    <tr>
+      <td align="right"></td>
+      <td>
+        <a href="/user/login/">User Login</a> <br />
+        <a href="#">Forget your Username or Password ?</a> (Developing)
+      </td>
+    </tr>
   </table>
   </form>
 </fieldset>

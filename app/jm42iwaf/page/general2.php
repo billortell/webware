@@ -11,7 +11,11 @@
 <div id="bodywrap"><div id="bodycontent">
 
 <?php
-$this->pagelet("header", null, 'w');
+if (isset($this->reqs->uname)) {
+    $this->pagelet("header_user", null, 'w');
+} else {
+    $this->pagelet("header", null, 'w');
+}
 ?>
 
 <div id="instance-menu" class="wrapper clearboth">

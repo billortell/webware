@@ -105,7 +105,8 @@ if ($msg === null) {
     <tr>
       <td align="right"></td>
       <td>
-        <a href="#">Forget your Username or Password ? (Developing)</a>
+        <a href="/user/register/">User Registration</a> <br />
+        <a href="#">Forget your Username or Password ?</a> (Developing)
       </td>
     </tr>
   </table>

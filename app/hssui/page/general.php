@@ -14,7 +14,11 @@
 <?php
 $session = user_session::getInstance();
 
-$this->pagelet("header", null, 'w');
+if (isset($this->reqs->uname) || $session->uid != '0') {
+    $this->pagelet("header_user", null, 'w');
+} else {
+    $this->pagelet("header", null, 'w');
+}
 ?>
 
 <div id="instance-menu" class="wrapper clearboth">

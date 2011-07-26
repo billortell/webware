@@ -133,8 +133,8 @@ $cg = Hooto_Config_Array::get('global');
 // print_r($cg);
 $reqs = new Hooto_Web_Request();//print_r($reqs);//print_r($_SERVER);
 if (isset($cg['routes'])) {
-    $reqs->router($cg['routes']);
-} //print_r($reqs);
+    $reqs->router($cg['routes'], $cg['routes_default']);
+} //print_r($reqs);die();
 
 /**
  * database api
@@ -146,9 +146,6 @@ if (file_exists(SYS_ROOT."app/{$reqs->app}/func.php")) {
     require_once SYS_ROOT."app/{$reqs->app}/func.php";
 }
 
-if (list($u, $i, $a) = array_slice(array('a','b','c','d'), 0)) {
-    echo 'OK';
-}
 
 /** views */
 $view = new Hooto_Web_View();

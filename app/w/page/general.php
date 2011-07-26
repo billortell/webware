@@ -11,7 +11,11 @@
 <div id="bodywrap"><div id="bodycontent">
 
 <?php
-$this->pagelet("header");
+if (isset($this->reqs->uname)) {
+    $this->pagelet("header_user");
+} else {
+    $this->pagelet("header");
+}
 ?>
 
 <div class="clearhr"></div>

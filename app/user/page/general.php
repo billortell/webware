@@ -12,7 +12,11 @@
 <div id="bodywrap"><div id="bodycontent">
 
 <?php
-$this->pagelet("header", null, 'w');
+if (isset($this->reqs->uname) || user_session::getInstance()->uid != '0') {
+    $this->pagelet("header_user", null, 'w');
+} else {
+    $this->pagelet("header", null, 'w');
+}
 ?>
 
 <div class="clearhr"></div>

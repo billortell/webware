@@ -35,7 +35,7 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
 
 <?php
 
-    debugAction();
+    //debugAction();
 
     function debugAction()
     {
@@ -193,6 +193,16 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
         $user_map = array();
         $rs = $dbsrc->query("SELECT * from kit_user ORDER BY userid LIMIT 99999")->fetchAll();
         foreach ($rs as $val) {
+            $des = str_split($val['username']);            
+            $path = './data/user/v5/'.$des['0'].'/'.$des['1'].'/'.$des['2'].'/'.$val['username'];
+            
+            if (file_exists($path."/icon-normal.png")) {
+                $des = str_split(uname2uid($val['username']));            
+                $path2 = './data/user/'.$des['0'].'/'.$des['1'].'/'.$des['2'].'/'.uname2uid($val['username']);
+                Core_Util_Directory::mkdir($path2);
+                copy($path."/icon-normal.png", $path2."/w100.png");
+                copy($path."/icon-small.png", $path2."/w40.png");
+            }
             $user_map[$val['userid']] = uname2uid($val['username']);
         }
         

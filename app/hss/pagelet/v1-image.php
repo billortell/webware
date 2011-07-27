@@ -44,12 +44,12 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s",strtotime($item['updated'])) 
         
 header("Content-type: ".$ims['mime']);
 
-$validator = new Zend_Validate_File_IsImage();
-if ($validator->isValid($item['imagePath'], array('type' => $ims['mime']))) {
+//$validator = new Zend_Validate_File_IsImage();
+//if ($validator->isValid($item['imagePath'], array('type' => $ims['mime']))) {
     header("Content-Disposition: inline; filename=".$item['media_name']);
-} else {
-    header('Content-Disposition: attachment; filename='.$item['media_name']);
-}
+//} else {
+//    header('Content-Disposition: attachment; filename='.$item['media_name']);
+//}
 header("Content-Length: ".filesize($item['imagePath']));    
 
 $fp = fopen($item['imagePath'], "rb"); 

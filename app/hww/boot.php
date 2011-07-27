@@ -23,7 +23,7 @@
 /** ensure this file is being included by a parent file */
 defined('SYS_ROOT') or die('Access Denied!');
 
-define('HWW_VERSION', '1.0.0lab');
+define('HWW_VERSION', '1.0.1lab');
 
 //ini_set('zlib.output_compression', 'Off');
 

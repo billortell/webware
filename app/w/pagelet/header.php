@@ -22,7 +22,7 @@ $msg = '';
     $session = user_session::getInstance();
     if (user_session::isLogin()) {
         echo "<b>[".user_session::getInstance()->uname."]</b> &nbsp;&nbsp;";
-        echo "<a href=\"".$this->siteurl('', 'blog', array(':uname' => $session->uname))."\">iSite</a>  &nbsp;&nbsp;&nbsp;&nbsp;";
+        echo "<a href=\"".$this->siteurl('', 'blog', array(':uname' => user_session::getInstance()->uname))."\">iSite</a>  &nbsp;&nbsp;&nbsp;&nbsp;";
         echo "<a href=\"{$siteurl_user}/user/manage/\">Account</a> &nbsp;&nbsp;&nbsp;&nbsp;";
         echo "<a href=\"{$siteurl_user}/user/logout/\">Logout</a>";
     } else if ($this->reqs->act != 'logout') {

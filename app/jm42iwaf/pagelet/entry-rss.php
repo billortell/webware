@@ -36,7 +36,7 @@ $feed->setDateModified(time());
 //print_r($ret);
 foreach ($ret as $val) {
     
-    $content = htmlspecialchars(Hooto_Util_Format::summaryPlainText($val['content']));
+    $content = htmlspecialchars(Hooto_Util_Format::summaryPlainText($val['content'], 2000));
     
     $entry = $feed->createEntry();
     

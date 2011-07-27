@@ -79,7 +79,7 @@ if ($this->sidebar !== NULL) {
   <div class="box">
   
     <div class="sl">
-      <p>Based on <b><a href="#">Hooto WebWare</a></b></p>
+      <p>Based on <b><a href="https://github.com/eryx/webware" target="_blank">Hooto WebWare <?php echo HWW_VERSION;?></a></b></p>
     </div>
 
     <div class="sr">

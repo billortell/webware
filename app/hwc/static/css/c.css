@@ -1,0 +1,103 @@
+
+body {
+  display:block;
+  background-color: #e1e1e0;
+}
+
+div {display:block;}
+
+/** header */
+#hwc_header {
+  padding:10px;
+  background-color:#333333; color:#ffffff;
+}
+
+#hwc_header a:link {color:#fff;}
+#hwc_header a:hover {color:#d54e21;}
+#hwc_body {margin:0;padding:0;}
+
+/** Layout:#1 */
+#hwc_layout_sidebar {
+  position: absolute;
+  margin: 0px 0px 0px 10px;
+  clear: left;
+  float: left;
+  width: 180px;
+}
+#hwc_layout_body {
+  margin: 0px 10px 0px 190px;
+}
+
+
+.logo_title {float:left; font-size:16px; font-weight:bold;}
+.menu_nav {margin:0 0 0 200px;}
+.menu_nav span {
+  padding:2px 10px; margin-right:20px; border:1px solid #fff;
+  -moz-border-radius:4px;
+  -khtml-border-radius:4px;
+  -webkit-border-radius:4px;
+  border-radius:4px;
+}
+.menu_nav span a {
+  text-decoration:none;
+}
+
+#hwc_creator_content {
+  margin:0 0 0 210px;
+  position: relative;
+}
+
+#hwc_creator_content table,tr,td {
+  margin:0; padding:0;
+}
+
+#hwc_creator_content ul {margin:0;}
+
+#hwc_creator_workspace {
+  min-width: 1000px; min-height:500px; 
+  width: 100%; height:100%;
+}
+#hwc_creator_workspace_editor {
+  background-color: #fff;
+  width:500px;
+}
+#hwc_creator_workspace_preview {
+  background-color: #fff;
+}
+#hwc_creator_workspace_preview iframe {
+  width:100%; height:100%; border: 1px solid #ccc;
+}
+
+.hwc_layout_tabs {width:100%; min-height:20px; font-size:12px; padding:5px 10px 5px 0;}
+.hwc_layout_tabs a {text-decoration:none;}
+.hwc_layout_tabs ul {list-style:none; margin:0; padding:0;}
+.hwc_layout_tabs ul li {float:left; margin-right:20px;}
+
+
+.CodeMirror {
+  font-size:13px;
+  border: 1px solid #ccc;
+  background-color:#fff; 
+  height:90%;
+}
+
+.CodeMirror-scroll {
+  min-width:600px; max-width:900px;
+  min-height:500px;
+  height:90%;
+}
+
+.activeline {background: #f0fcff !important;}
+
+/** ### **/
+.editlet {
+  text-align:left; margin:20px 0px; padding:10px 20px; min-width:600px;
+  border:#989898 2px solid;
+  -moz-border-radius:3px;
+  -khtml-border-radius:3px;
+  -webkit-border-radius:3px;
+  border-radius:3px;  
+}
+.editlet .titletab {padding:0 10px 0 10px; font-size:20px; font-weight:bold;}
+.editlet td {padding:0;}
+

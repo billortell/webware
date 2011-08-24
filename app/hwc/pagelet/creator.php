@@ -2,7 +2,6 @@
 
 $this->headtitle = "WebWare Creator";
 
-Hooto_Web_View::headStylesheet("/_w/css/creator.css");
 
 Hooto_Web_View::headJavascript("/_default/jquery/js/jquery-1.6.1.min.js");
 Hooto_Web_View::headJavascript("/_default/jqueryui/js/jquery-ui-1.8.13.custom.min.js");
@@ -19,6 +18,8 @@ Hooto_Web_View::headJavascript("/_default/codemirror/mode/javascript/javascript.
 Hooto_Web_View::headJavascript("/_default/codemirror/mode/css/css.js");
 Hooto_Web_View::headJavascript("/_default/codemirror/mode/clike/clike.js");
 Hooto_Web_View::headJavascript("/_default/codemirror/mode/php/php.js");
+
+//Hooto_Web_View::headJavascript("/_hwc/js/c.js");
     
 Hooto_Web_View::headStylesheet("/_default/codemirror/theme/default.css");
 
@@ -29,9 +30,10 @@ $text = file_get_contents($url);
 
 <div id="hwc_creator_sidebar">
     <ul class="hwc_cfs_tabs">
-        <li><a href="javascript:pageopen(1)">Page 1</a></li>
-        <li><a href="javascript:pageopen(2)">Page 2</a></li>
-        <li><a href="javascript:pageopen(3)">Page 3</a></li>
+        <li><a href="javascript:pl_open(1)">Page 1</a></li>
+        <li><a href="javascript:pl_open(2)">Page 2</a></li>
+        <li><a href="javascript:pl_open(3)">Page 3</a></li>
+        <li><a href="javascript:debug()">debug</a></li>
       </ul>
 </div>
 
@@ -43,12 +45,11 @@ $text = file_get_contents($url);
     </ul>
   </div>
 
-  <table id="hwc_creator_workspace">
+  <table id="hwc_creator_workspace" cellspacing="0">
     
     <tr >
     
       <td id="hwc_creator_workspace_editor" valign="top">
-
       </td>
     
       <td width="2px"></td>
@@ -65,26 +66,16 @@ $text = file_get_contents($url);
 <script type="text/javascript">
 
 var pages = new Array();
-var pagecurrent = '0';
+var pagecurrent = 0;
+var editor;
 
-/*
-var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    lineNumbers: true,
-    matchBrackets: true,
-    mode: "application/x-httpd-php",
-    indentUnit: 4,
-    indentWithTabs: false,
-    tabMode: "shift"
-});
-*/
-
-function workspaceresize() 
+function ws_resize() 
 {
     width_workspace  = $('body').width() - $('#hwc_creator_sidebar').width() - 30;
-    height = $('body').height() - $('#hwc_header').height() - 15;  
+    height = $('body').height() - $('#hwc_header').height() - 30;  
     
-    height_workspace = height - $('.hwc_cws_tabs').height();    
-
+    height_workspace = height - $('.hwc_cws_tabs').height();
+    
     $('#hwc_creator_sidebar').height(height);
 
     //$('.CodeMirror-scroll').height(height_workspace);
@@ -100,19 +91,23 @@ function workspaceresize()
     $('.CodeMirror-scroll').height(height_workspace);
 }
 
-function pageopen(id)
-{    
-    if (pages[id] !== undefined) {
+
+function pl_open(id)
+{
+    if (pagecurrent == id) {
         return;
     }
     
-    if (pagecurrent > 0) {
-        //pages[pagecurrent].toTextArea();
-        pagecurrent = 0;
+    if (pages[id] !== undefined) {
+        pl_goto(id);
+    } else {
+        pl_load_goto(id);
     }
-    
-    //
-    entry = '<li id="pagetab'+id+'"><a href="javascript:pageswitch('+id+')">Page '+id+'</a><a href="javascript:pageclose('+id+')">[x]</a></li>';
+}
+
+function pl_load_goto(id)
+{
+    entry = '<li id="pagetab'+id+'"><a href="javascript:pl_open('+id+')">Page '+id+'</a><a href="javascript:pl_close('+id+')">[x]</a></li>';
     $(".hwc_cws_ftabsli").prepend(entry);
     
     //
@@ -120,10 +115,15 @@ function pageopen(id)
     $("#hwc_creator_workspace_editor").prepend(page);
     
     //
-    $.get('/hwc/creator-source-get/', function(data) {
-        $('#code'+id).text(data + id);
-        pages[id] = CodeMirror.fromTextArea(document.getElementById('code'+id), {
-        //pages[id] = CodeMirror.fromTextArea('code'+ id, {
+    $.get('/hwc/creator-source-get/?id='+id, function(data) {
+        $('#code'+id).text(data);
+        if (pagecurrent > 0) {
+            editor.toTextArea();
+        }
+        pages[id] = id;
+        pagecurrent = id;
+        document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
+        editor = CodeMirror.fromTextArea(document.getElementById('code'+id), {
             lineNumbers: true,
             matchBrackets: true,
             mode: "application/x-httpd-php",
@@ -132,63 +132,72 @@ function pageopen(id)
             tabMode: "shift",
             // height: "dynamic",
             onChange: function() {
-                pagesave(id);
-                pagepreview();
+                pl_save(id);
+                pl_preview(id);
             }
         });
-        workspaceresize();
-    });
-    
-    pagecurrent = id;
-    
-    document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
-
-}
-
-function pagesave(id)
-{    
-    $.ajax({
-        url: "/hwc/creator-source-put/",
-        type: "POST",
-        data: pages[id].getValue(),
-        dataType: "text"
+        ws_resize();
     });
 }
 
-function pageswitch(id)
+function pl_goto(id)
 {
-    if (id == pagecurrent) {
+    if (pagecurrent == id) {
         return;
     }
-
-    //alert();
-    //pages[pagecurrent].refresh();
-    pages[pagecurrent].save();
+    
+    if (pagecurrent > 0) {
+        editor.toTextArea();
+    }
+   
+    pages[id] = id;
+    pagecurrent = id;
+    document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
+    editor = CodeMirror.fromTextArea(document.getElementById('code'+id), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: false,
+        tabMode: "shift",
+        // height: "dynamic",
+        onChange: function() {
+            pl_save(id);
+            pl_preview(id);
+        }
+    });
+    
+    ws_resize();
 }
 
-function pageclose(id)
-{    
-    $('#pagetab'+id).remove();
+function pl_close(id)
+{
+    pl_save(id);
     
-    if (id == pagecurrent) {
-        pages[id].toTextArea();
-        //CodeMirror
-        pages.splice(id, 1);
-        $('#code'+id).remove();        
-    } else {
-
-        pages.splice(id, 1);
-        $('#code'+id).remove();
-        
-        return;   
+    $('#pagetab'+id).remove();
+ 
+    for (var i in pages) {
+        if (pages[i] == id) {
+            pages.splice(i, 1);            
+            break;
+        }
     }
     
+    if (id != pagecurrent) {  
+        $('#code'+id).remove();      
+        return;
+    }
+    
+    editor.toTextArea();
+    $('#code'+id).remove();
+    
     pagecurrent = 0;
+    
     for (var i in pages) {
-        //CodeMirror.fromTextArea(document.getElementById('code'+i), {
-        //pages[i].setValue(document.getElementById('code'+i).value);
+    
+        pagecurrent = pages[i];
         
-        pages[i] = CodeMirror.fromTextArea(document.getElementById('code'+i), {
+        editor = CodeMirror.fromTextArea(document.getElementById('code'+pagecurrent), {
             lineNumbers: true,
             matchBrackets: true,
             mode: "application/x-httpd-php",
@@ -196,30 +205,39 @@ function pageclose(id)
             indentWithTabs: false,
             tabMode: "shift",
             onChange: function() {
-                pagesave(i);
-                pagepreview();
+                pl_save(i);
+                pl_preview(i);
             }
         });
-        //pages[i].refresh();
-        pagecurrent = i;
-        break;
-    }
 
-    document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
+        document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
+        break;
+    }    
 }
 
-function pagepreview()
+function pl_save(id)
+{    
+    $.ajax({
+        url: "/hwc/creator-source-put/?id="+id,
+        type: "POST",
+        data: editor.getValue(),
+        dataType: "text"
+    });
+}
+
+function pl_preview(id)
 {
     $('#hwc_creator_workspace_iframe').attr('height', '100%');
-    $('#hwc_creator_workspace_iframe').attr('src', '/hwc/creator-demo/');
+    $('#hwc_creator_workspace_iframe').attr('src', '/hwc/creator-demo'+id);
 }
 
 $(window).resize(function() {
-    workspaceresize();
+    ws_resize();
 });
 
 $(document).ready(function() {
-    workspaceresize();
-    //window.setInterval(workspaceresize, 2000);   
+    ws_resize();
+    //window.setInterval(ws_resize, 2000);   
 });
+
 </script> 

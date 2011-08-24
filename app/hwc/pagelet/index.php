@@ -1,20 +1,39 @@
+<?php
 
+$this->headtitle = "Web Creator";
 
-<h2>Welcome!</h2>
-<br />
-<b>Hooto WebWare</b> is an easy-to-use platform that lets you build custom business applications on your own, online (Similar to Zoho Creator)
-<ul>
-  <li>Open Source</li>
-  <li>Data Collection, Analysis, Reporting and Collaboration</li>
-  <li>Online Form, Workflow and Business Rules, Notifications</li>
-  <li>Design HTML Views, Brand with your Logo and Themes</li>
-  <li>Integrated with Hooto SSO and Hooto Data Protocol APIs</li>
-</ul>
+?>
+<table width="100%" class="table_list" cellspacing="0">
+<thead>
+  <tr>   
+    <th><b>ID</b></th>
+    <th><b>NAME</b></th>
+    <th><b>VERSION</b></th>
+    <th></th>
+  </tr>
+</thead>
+<?php
 
-<h2>Resources</h2>
-<ul>
-  <li><a href="http://www.hooto.com/" target="_blank">Project page</a> - Offical project site</li>
-  <li><a href="http://www.github.com/eryx/" target="_blank">Github</a> - Source code</li>
-  <li><a href="http://www.hooto.com/home/rui/" target="_blank">Rui Log</a> - Author's blog</li>
-</ul>
+$patt = SYS_ROOT.'app/*';
+
+foreach (glob($patt, GLOB_ONLYDIR) as $st) {
+    
+    if (!file_exists($st."/package.info.php")) {
+        continue;
+    }
+    
+    $val = require $st."/package.info.php";
+    
+?>
+<tr>
+    <td><b><?=$val['id']?></b></td>
+    <td><b><?=$val['name']?></b></td>
+    <td><?=$val['version']?></td>
+    <td>
+        <a href="javascript:node_edit('<?=$val['id']?>')">#</a>
+    </td>
+</tr>
+<?php } ?>
+</table>
+
 

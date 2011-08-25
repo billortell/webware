@@ -1,9 +1,11 @@
 <?php
 
 $config = array();
-$config['id']   = 'hssui';
-$config['name'] = 'Storage Service';
+$config['appid']   = 'hssui';
+$config['name'] = 'Storage Service UI';
 $config['summary'] = 'Hooto Storage Service User Interface';
+
+$config['type'] = '2';
 
 $config['depends'][] = 'hss';
 $config['depends'][] = 'user';

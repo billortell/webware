@@ -18,11 +18,11 @@ $patt = SYS_ROOT.'app/*';
 
 foreach (glob($patt, GLOB_ONLYDIR) as $st) {
     
-    if (!file_exists($st."/package.info.php")) {
+    if (!file_exists($st."/info.php")) {
         continue;
     }
     
-    $val = require $st."/package.info.php";
+    $val = require $st."/info.php";
     
 ?>
 <tr>

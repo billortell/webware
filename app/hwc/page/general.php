@@ -266,7 +266,7 @@ function pl_save(path)
 function pl_preview(path)
 {  
   $('#hwc_creator_workspace_iframe').attr('height', '100%');
-  $('#hwc_creator_workspace_iframe').attr('src', '/hwc/appplpreview?path'+path);
+  $('#hwc_creator_workspace_iframe').attr('src', '/hwc/appplpreview?path='+path);
 }
 
 $(window).resize(function() {

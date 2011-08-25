@@ -3,16 +3,13 @@ function hwc_applist() {
   $('#hwc_layout_body_content').load('/hwc/applist');
   //topmenu_change('topmenu_node');
 }
-
 function topmenu_change(current) {
   $('#topmenu_task').removeClass('current');
   $("#"+current).addClass("current");
 }
-
 function hwc_app(id) {
   $('#hwc_layout_sidebar').load('/hwc/appsidepane?id='+ id);
 }
-
 function hwc_appcreate() {
   var appid = arguments[0] ? arguments[0] : '';
   $('#hwc_layout_body_content').load('/hwc/appcreate?appid='+appid);

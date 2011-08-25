@@ -5,33 +5,22 @@
   
   <title><?php echo $this->headtitle; ?></title>
   
-  <script src="/_default/jquery/js/jquery-1.6.1.min.js"></script>
-  
   <link rel="stylesheet" href="/_w/css/global.css" type="text/css" media="all" />
   <link rel="stylesheet" href="/app/hwc/static/css/c.css" type="text/css" media="all" />
-  
   <script src="/app/hwc/static/js/c.js"></script>
   
-  <script src="/_default/jquery/js/jquery-1.6.1.min.js"></script>
-  <script src="/_default/jqueryui/js/jquery-ui-1.8.13.custom.min.js"></script>
-  <link href="/_default/jqueryui/css/smoothness/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" media="all" />
+  <script src="/app/jquery16/jquery-1.6.min.js"></script>
 
-  <link href="/_default/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
-  <script src="/_default/codemirror/lib/codemirror.js"></script>
-
-  <script src="/_default/codemirror/lib/runmode.js"></script>
-  <script src="/_default/codemirror/lib/overlay.js"></script>
-
-  <script src="/_default/codemirror/mode/xml/xml.js"></script>
-  <script src="/_default/codemirror/mode/javascript/javascript.js"></script>
-  <script src="/_default/codemirror/mode/css/css.js"></script>
-  <script src="/_default/codemirror/mode/clike/clike.js"></script>
-  <script src="/_default/codemirror/mode/php/php.js"></script>
-
-  <script src="/app/hwc/static/js/c.js"></script>
-  
-  <link href="/_default/codemirror/theme/default.css" rel="stylesheet" type="text/css" media="all" />
-
+  <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/app/codemirror2/theme/default.css" rel="stylesheet" type="text/css" media="all" />
+  <script src="/app/codemirror2/lib/codemirror.js"></script>
+  <script src="/app/codemirror2/lib/runmode.js"></script>
+  <script src="/app/codemirror2/lib/overlay.js"></script>
+  <script src="/app/codemirror2/mode/xml/xml.js"></script>
+  <script src="/app/codemirror2/mode/javascript/javascript.js"></script>
+  <script src="/app/codemirror2/mode/css/css.js"></script>
+  <script src="/app/codemirror2/mode/clike/clike.js"></script>
+  <script src="/app/codemirror2/mode/php/php.js"></script>
   <?php
   echo $this->headlink.$this->headJavascript.$this->headStylesheet; 
   ?>
@@ -87,7 +76,7 @@ var editor;
 
 function ws_resize() 
 {
-  width_workspace  = $('body').width() - $('#hwc_layout_sidebar').outerWidth(true) - 10;
+  width_workspace  = $('body').width() - $('#hwc_layout_sidebar').outerWidth(true) - 20;
   height = $('body').height() - $('#hwc_header').outerHeight(true) - 10;  
   
   height_workspace = height - $('#hwc_layout_body_tabs').outerHeight(true);
@@ -151,8 +140,6 @@ function pl_load_goto(path)
   
   entry = '<li id="pagetab'+hid+'"><a href="javascript:pl_open(\''+path+'\')">'+path+'</a><a href="javascript:pl_close(\''+path+'\')">[x]</a></li>';
   $(".hwc_layout_tabsul").prepend(entry);
-  
-  
 
   //
   page = '<textarea id="code'+hid+'" name="code'+hid+'" class="displaynone"></textarea>';
@@ -277,15 +264,15 @@ function pl_save(path)
 }
 
 function pl_preview(path)
-{
-  //var hid = Math.abs(crc32(path));
-  
-  //$('#hwc_creator_workspace_iframe').attr('height', '100%');
-  //$('#hwc_creator_workspace_iframe').attr('src', '/hwc/creator-demo'+appid);
+{  
+  $('#hwc_creator_workspace_iframe').attr('height', '100%');
+  $('#hwc_creator_workspace_iframe').attr('src', '/hwc/appplpreview?path'+path);
 }
 
 $(window).resize(function() {
-  //ws_resize();
+  if (document.getElementById("hwc_creator_workspace")) {
+    ws_resize();
+  }
 });
 
 $(document).ready(function() {

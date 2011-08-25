@@ -1,10 +1,13 @@
 <?php
 
+
+
+
 header('Content-type: text/plain');
 
 
 if ($this->reqs->path == null) {
-    die('ERROR');
+    header("HTTP/1.0 404 Not Found"); die();
 }
 
 $f = SYS_ROOT."/app/{$this->reqs->path}";
@@ -12,7 +15,12 @@ $f = SYS_ROOT."/app/{$this->reqs->path}";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 if (!file_exists($f)) {
-    die('HWC404');
+    header("HTTP/1.0 404 Not Found"); die();
+}
+
+$fm = mime_content_type($f);
+if (substr($fm,0,4) != 'text') {
+  header("HTTP/1.0 404 Not Found"); die();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'

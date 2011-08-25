@@ -1,7 +1,5 @@
 <?php
 
-header('Content-type: text/plain');
-
 $msg = '';
 
 $appid = hwl_string::rand(8,2);
@@ -10,51 +8,54 @@ $item = array(
   'name'  => $appid,
   'summary' => '',
   'version' => '1.0.0',
+  'release' => '1',
   'depends' => array(),
 );
-if (strlen($this->reqs->appid)) {
-  $item['appid'] = $this->reqs->appid;
-}
-
-$f = SYS_ROOT."/app/{$item['appid']}/package.info.php";
-$f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 
-$do = 'new';
 $title = 'Create Application';
-if (file_exists($f)) {
-  $title = 'Edit Application'; 
-  $do = 'edit';
   
-  $t = require $f;
-  //print_r($t);
-  foreach ($item as $k => $v) {
-    if (isset($t[$k])) {
-      $item[$k] = $t[$k];
+if (strlen($this->reqs->appid)) {
+
+  $f = SYS_ROOT."/app/{$this->reqs->appid}/info.php";
+  $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
+  
+  if (file_exists($f)) {
+    $title = 'Edit Application';
+  
+    $t = require $f;
+    //print_r($t);
+    foreach ($item as $k => $v) {
+      if (isset($t[$k])) {
+        $item[$k] = $t[$k];
+      }
     }
+  } else {
+    $item['appid']  = $this->reqs->appid;
+    $item['name']   = $this->reqs->appid;
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST'
+    || $_SERVER['REQUEST_METHOD'] == 'PUT') {
+  
+    foreach ($item as $k => $v) {
+      if (isset($_POST[$k])) {
+        $item[$k] = $_POST[$k];
+      }
+    }
+    //echo var_export($item ,true);
+    $as = "<?php\nreturn ". var_export($item, true) .";\n";
+  
+    Hooto_Util_Directory::mkfiledir($f, 0777);
+  
+    $fp = fopen($f, 'w');
+    fwrite($fp, pack("CCC",0xef,0xbb,0xbf)); // utf8
+    fwrite($fp, $as);
+    fclose($fp);
+  
+    $msg = "<div>OK</div>";
   }
 }
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST'
-  || $_SERVER['REQUEST_METHOD'] == 'PUT') {
-  
-  foreach ($item as $k => $v) {
-    if (isset($_POST[$k])) {
-      $item[$k] = $_POST[$k];
-    }
-  }
-  //echo var_export($item ,true);
-  $as = "<?php\nreturn ". var_export($item, true) .";\n";
-  
-  Hooto_Util_Directory::mkfiledir($f, 0777);
-  //echo $f;
-  $fp = fopen($f, 'w');
-  fwrite($fp, $as);
-  fclose($fp);
-  
-  $msg = "<div>OK</div>";
-}
-
 echo $msg;
 ?>
 
@@ -75,6 +76,10 @@ echo $msg;
       <td ><input id="version" name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
     </tr>
     <tr>
+      <td align="right" >Release</td>
+      <td ><input id="release" name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
+    </tr>
+    <tr>
       <td align="right" valign="top">SUMMARY</td>
       <td ><textarea id="summary" name="summary" rows="6" style="width:500px;"><?=$item['summary']?></textarea></td>
     </tr>
@@ -93,13 +98,12 @@ $("#hwc_appcreate_form").submit(function(event) {
   event.preventDefault(); 
   
   var dataString = $(this).serialize();
-  //alert($(this).attr('action'));
+
   $.ajax({ 
     type: "POST",
     url: $(this).attr('action'),
     data: dataString,
-    success: function(data){
-      //alert(data);
+    success: function(data) {
       $("#hwc_layout_body_content").empty().append(data);
       window.scrollTo(0,0);
     }

@@ -1,9 +1,9 @@
 <?php
 
 $config = array();
-$config['id']   = 'jm42iwaf';
-$config['name'] = 'Hooto Blog';
-$config['summary'] = 'Hooto Blog';
+$config['appid']   = 'jm42iwaf';
+$config['name'] = 'Hooto CMS';
+$config['summary'] = 'Hooto CMS';
 
 $config['depends'][] = 'hdata';
 $config['depends'][] = 'user';

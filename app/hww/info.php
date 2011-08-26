@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['id']   = 'hww';
+$config['appid']   = 'hww';
 $config['name'] = 'Hooto WebWare';
 $config['summary'] = 'Build custom business applications on your own, online';
 

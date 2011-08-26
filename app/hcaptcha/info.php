@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['id']   = 'hcaptcha';
+$config['appid']   = 'hcaptcha';
 $config['name'] = 'Hooto Captcha';
 $config['summary'] = 'Completely Automated Public Turing test to tell Computers and Humans Apart';
 

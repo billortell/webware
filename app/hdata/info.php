@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['id']   = 'hdata';
+$config['appid']   = 'hdata';
 $config['name'] = 'Hooto Data';
 $config['summary'] = 'Hooto Data APIs';
 

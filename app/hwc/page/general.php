@@ -31,7 +31,7 @@
 <div id="hwc_header">
   <div class="logo_title">Web Creator</div>
   <div class="menu_nav">
-    <span><a href="javascript:hwc_applist()">Home</a></span>
+    <span><a href="javascript:hwc_applist()">Applications</a></span>
     <span><a href="javascript:hwc_appcreate()">Create Application</a></span>
   </div>
 </div>
@@ -87,17 +87,10 @@ function ws_resize()
   $('#hwc_creator_workspace').width(width_workspace);
   $('#hwc_creator_workspace').height(height_workspace);
   
-  console.log('css.height:'+$('#hwc_header').css('height'));
+  /* console.log('css.height:'+$('#hwc_header').css('height'));
   console.log('height:'+$('#hwc_header').height());
   console.log('outerHeight:'+$('#hwc_header').outerHeight());
-  console.log('outerHeight(1):'+$('#hwc_header').outerHeight(true));
-  
-  //console.log('height: body:'+$('body').height()+', tabs:'+$('#hwc_layout_body_tabs').height()+', last:'+height_workspace);
-  //
-  //$('#hwc_creator_workspace_iframe').height(height_workspace);
-  //$('#hwc_creator_workspace_editor').height(height_workspace - 10);
-  //$('#hwc_creator_workspace_iframe').css();
-  //$('.CodeMirror').height(height_workspace);
+  console.log('outerHeight(1):'+$('#hwc_header').outerHeight(true)); */
   
   $('.CodeMirror-scroll').height(height_workspace);
 }
@@ -138,13 +131,32 @@ function pl_load_goto(path)
 {
   var hid = Math.abs(crc32(path));
   
-  entry = '<li id="pagetab'+hid+'"><a href="javascript:pl_open(\''+path+'\')">'+path+'</a><a href="javascript:pl_close(\''+path+'\')">[x]</a></li>';
+  entry = '<li id="pagetab'+hid+'"><a href="javascript:pl_open(\''+path+'\')">'+path+'</a><a href="javascript:pl_close(\''+path+'\')" class="close">[x]</a></li>';
   $(".hwc_layout_tabsul").prepend(entry);
+  _tab_aclass_switch('pagetab'+hid);
 
   //
   page = '<textarea id="code'+hid+'" name="code'+hid+'" class="displaynone"></textarea>';
   $("#hwc_creator_workspace_editor").prepend(page);
   
+  var ext = path.split('.').pop();//path.substr(path.lastIndexOf('.') + 1);
+  switch(ext)
+  {
+    case 'php':
+    case 'css':
+    case 'xml':
+      mode = ext;
+      break;
+    case 'sql':
+      mode = 'plsql';
+      break;
+    case 'js':
+      mode = 'javascript';
+      break;
+    default:
+      mode = 'htmlmixed';
+  }
+
   //
   $.get('/hwc/appsrc/?path='+path, function(data) {
     
@@ -161,7 +173,7 @@ function pl_load_goto(path)
     editor = CodeMirror.fromTextArea(document.getElementById('code'+hid), {
       lineNumbers: true,
       matchBrackets: true,
-      mode: "application/x-httpd-php",
+      mode: mode,
       indentUnit: 2,
       indentWithTabs: false,
       tabMode: "shift",
@@ -183,17 +195,37 @@ function pl_goto(path)
     return;
   }
   
+  _tab_aclass_switch('pagetab'+hid);
+  
   if (pagecurrent != 0) {
     editor.toTextArea();
   }
-   
+  
+  var ext = path.split('.').pop();//path.substr(path.lastIndexOf('.') + 1);
+  switch(ext)
+  {
+    case 'php':
+    case 'css':
+    case 'xml':
+      mode = ext;
+      break;
+    case 'sql':
+      mode = 'plsql';
+      break;
+    case 'js':
+      mode = 'javascript';
+      break;
+    default:
+      mode = 'htmlmixed';
+  }
+  
   pages[hid] = hid;
   pagecurrent = hid;
   //document.getElementById('ftabs_debug').textContent = "ID:" + pagecurrent;
   editor = CodeMirror.fromTextArea(document.getElementById('code'+hid), {
     lineNumbers: true,
     matchBrackets: true,
-    mode: "application/x-httpd-php",
+    mode: mode,
     indentUnit: 2,
     indentWithTabs: false,
     tabMode: "shift",
@@ -246,6 +278,7 @@ function pl_close(path)
       onChange: function() {
         pl_save(path);
         pl_preview(path);
+        _tab_aclass_switch('pagetab'+pagecurrent);
       }
     });
 
@@ -255,6 +288,10 @@ function pl_close(path)
 
 function pl_save(path)
 {
+  hid = Math.abs(crc32(path));
+  if (hid != pagecurrent) {
+    return;
+  }
   $.ajax({
     url: "/hwc/appsrc/?path="+path,
     type: "POST",
@@ -267,6 +304,15 @@ function pl_preview(path)
 {  
   $('#hwc_creator_workspace_iframe').attr('height', '100%');
   $('#hwc_creator_workspace_iframe').attr('src', '/hwc/appplpreview?path='+path);
+}
+
+function _tab_aclass_switch(id) {
+
+  $(".hwc_layout_tabsul li").each(function(){
+    $(this).removeClass('current');
+  });
+
+  $("#"+id).addClass("current");
 }
 
 $(window).resize(function() {

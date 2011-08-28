@@ -74,11 +74,12 @@ div {display:block;}
   width:100%; height:100%; border: 1px solid #ccc;
 }
 
-.hwc_layout_tabs {width:100%; min-height:20px; font-size:12px; padding:5px 10px 5px 0;}
+.hwc_layout_tabs {width:100%; min-height:20px; font-size:14px; padding:5px 10px 5px 0;}
 .hwc_layout_tabs a {text-decoration:none;}
 .hwc_layout_tabs ul {list-style:none; margin:0; padding:0;}
 .hwc_layout_tabs ul li {float:left; margin-right:20px;}
-
+.hwc_layout_tabs .close {font-size:16px;}
+.hwc_layout_tabs .current a {color:#d54e21;}
 
 .CodeMirror {
   font-size:13px;

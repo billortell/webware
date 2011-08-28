@@ -49,8 +49,9 @@ if (strlen($this->reqs->appid)) {
     Hooto_Util_Directory::mkfiledir($f, 0777);
   
     $fp = fopen($f, 'w');
-    fwrite($fp, pack("CCC",0xef,0xbb,0xbf)); // utf8
-    fwrite($fp, $as);
+    //fwrite($fp, pack("CCC",0xef,0xbb,0xbf)); // utf8
+    fputs($fp,"\xef\xbb\xbf{$as}");
+    //fwrite($fp, $as);
     fclose($fp);
   
     $msg = "<div>OK</div>";

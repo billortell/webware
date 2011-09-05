@@ -20,6 +20,7 @@ class hdata_taxonomy
         
         $query = $query->select()
             ->from('term_data')
+            ->order('weight', 'desc'),
             ->limit(1000);
         
         if (isset($taxon['taxon'])) {

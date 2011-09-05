@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             } else {
             
-                $set['taxon'] = 1;
+                $set['taxon'] = hdata_entry::$metadata['taxonomy']['category']['id'];
                 $set['gid'] = $session->uid;
                 //print_r($set);
                 $_term->insert($set);

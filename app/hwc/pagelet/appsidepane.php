@@ -2,28 +2,29 @@
 
 $this->headtitle = "Web Creator";
 
-if ($this->reqs->id == null) {
+if ($this->reqs->path == null) {
   die('ERROR');
 }
-$appid  = $this->reqs->id;
+$p = preg_replace("/\/+/", "/", $this->reqs->path);
+$ps   = explode("/", trim($p, "/"));
+if (!isset($ps[0])) {
+  die("ERROR");
+}
+
+$appid  = $ps[0];
 if (!file_exists(SYS_ROOT."app/{$appid}")) {
   die('ERROR');
 }
 
-
-$cpath  = trim($this->reqs->cpath, '/');
-$cpath  = preg_replace("/\/+/", "/", $cpath);
-
-$cpath_nav = '';
-if (strlen($cpath)) {
-  $_cpath = strstr($cpath, strrchr($cpath, "/"), true);
-  $cpath_nav = "<span>
-    <img src='/app/hwc/static/img/arrow_undo.png' align='absmiddle' alt='{$_cpath}' /> 
-    <a href=\"javascript:_hwc_dir('{$appid}','{$_cpath}')\">Back</a></span> ";
+$p_nav = '';
+if (count($ps) > 1) {
+  $_path = strstr($p, strrchr($p, "/"), true);
+  $p_nav = "<span>
+    <img src='/app/hwc/static/img/arrow_undo.png' align='absmiddle' alt='{$_path}' /> 
+    <a href=\"javascript:_hwc_dir('{$_path}')\">Back</a></span> ";
 }
 
 $base = SYS_ROOT."app/{$appid}/";
-$blen = strlen(SYS_ROOT."app/");
 if (!file_exists($base."/info.php")) {
   die('ERROR');
 }
@@ -36,15 +37,15 @@ $info = require $base."/info.php";
 </div>
 
 <div class="sidebar_apppathnav">
-  <span><?=$cpath_nav?></span>
-  <span>[<a class="anoline" href="javascript:_open_window('/hwc/appnewfile?path=<?=$appid?>/<?=$cpath?>', 'New', '600', '300')">New File</a>]</span>
+  <span><?=$p_nav?></span>
+  <span>[<a class="anoline" href="javascript:_open_window('/hwc/appnewfile?path=<?=$p?>', 'New', '600', '300')">New File</a>]</span>
 </div>
 <?php
 
 $dir  = '';
 $file   = '';
 
-$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $base.$cpath."/*");
+$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), SYS_ROOT."app/{$p}/*");
 
 foreach (glob($glob) as $f) {
 
@@ -55,10 +56,9 @@ foreach (glob($glob) as $f) {
   $fmi = 'page_white';
   $href = null;
   
-  $path = "{$appid}/{$cpath}/$fn";
-  //$path = preg_replace("/\-+/", "-", $path);
+  $path = "{$p}/$fn";
   $path = preg_replace("/\/+/", "/", $path);
-    
+
   if ($fm == 'directory') {
     
     if ($fn == 'pagelet') {
@@ -69,7 +69,7 @@ foreach (glob($glob) as $f) {
       $fmi = 'folder';
     }
     
-    $href = "javascript:_hwc_dir('{$appid}', '{$cpath}/$fn')";
+    $href = "javascript:_hwc_dir('{$p}/$fn')";
     
   } else if (substr($fm,0,4) == 'text') {
 
@@ -84,13 +84,11 @@ foreach (glob($glob) as $f) {
   }
   
   $li = ($href === null) ? $fn : "<a href=\"{$href}\">{$fn}</a>";
-  $de = "<a href=\"javascript:_pl_del('{$path}');\" class='anoline'>[<b>x</b>]</a>";
+  $de = "<a href=\"javascript:_pl_del('{$path}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='anoline'>[<b>x</b>]</a>";
   $li = "<div><img src='/app/hwc/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> $li $de</div>";
   
   echo $li;
 }
-
-
 ?>
 <script type="text/javascript">
 function _open_window(url, title, width, height, text) {
@@ -105,8 +103,9 @@ function _open_window(url, title, width, height, text) {
   nwin = window.open(url, title, 'left='+ l +', top='+ t +', width='+ width +', height='+ height +',scrollbars=yes,resizable=yes');
   nwin.focus();
 }
-function _open_window_cb(path, file) {
-  _hwc_dir(path, '');
+
+function _open_window_cb(p, file) {
+  _hwc_dir(p);
   //pl_open(path+'/'+file);
 }
 function _pl_del(path) {
@@ -114,15 +113,15 @@ function _pl_del(path) {
     type: "GET",
     url: '/hwc/appfiledel?path='+path,
     success: function(){
-      _hwc_dir('<?=$appid?>','<?=$cpath?>');
+      _hwc_dir('<?=$p?>');
       window.scrollTo(0,0);
     }
   });
 }
-function _hwc_dir(appid, path) {
+function _hwc_dir(path) {
   $.ajax({ 
     type: "GET",
-    url: '/hwc/appsidepane?id='+appid+'&cpath='+path,
+    url: '/hwc/appsidepane?path='+path,
     data: '',
     success: function(data){
       $("#hwc_layout_sidebar").empty().append(data);

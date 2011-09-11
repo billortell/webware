@@ -8,7 +8,7 @@ function topmenu_change(current) {
   $("#"+current).addClass("current");
 }
 function hwc_app(id) {
-  $('#hwc_layout_sidebar').load('/hwc/appsidepane?id='+ id);
+  $('#hwc_layout_sidebar').load('/hwc/appsidepane?path='+ id);
 }
 function hwc_appcreate() {
   var appid = arguments[0] ? arguments[0] : '';

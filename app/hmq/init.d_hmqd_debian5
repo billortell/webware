@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# Startup script for the hmqd
+#
+### BEGIN INIT INFO
+# Provides:          hmqd
+# Required-Start:    $local_fs $syslog
+# Required-Stop:     $local_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop hmqd
+### END INIT INFO
+
+#set -e
+
+# Path to the binary.
+if [ -z "$HMQD_HOME" ];then
+    export HMQD_HOME=/opt/hmq
+fi
+cd $HMQD_HOME
+
+DAEMON=$HMQD_HOME/bin/hmqd
+NAME=hmqd
+CHROOT=$HMQD_HOME/var/log/empty
+PIDFILE=$HMQD_HOME/var/log/$NAME.pid
+
+test -x $DAEMON || exit 0
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+    log_begin_msg "Starting hmqd : $NAME"
+    [ -d ${CHROOT} ] || mkdir -p ${CHROOT}
+    start-stop-daemon --start --background -m --oknodo --pidfile $PIDFILE --exec $DAEMON && log_end_msg 0 || log_end_msg 1
+    ;;
+  stop)
+    log_begin_msg "Stopping hmqd : $NAME"
+    start-stop-daemon --stop --pidfile $PIDFILE --oknodo --exec $DAEMON && log_end_msg 0 || log_end_msg 1
+    rm -f $PIDFILE 
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  status)
+    pid=`cat $PIDFILE 2>/dev/null` || true
+    if test ! -f $PIDFILE -o -z "$pid"; then
+      echo "hmqd is not running"
+      exit 3
+    fi
+    if ps "$pid" >/dev/null 2>&1; then
+      echo "hmqd is running"
+      exit 0
+    else
+      echo "hmqd is not running"
+      exit 1
+    fi
+    ;;
+  *)
+    log_success_msg "Usage: /etc/init.d/$NAME {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0

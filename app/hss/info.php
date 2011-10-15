@@ -2,7 +2,7 @@
 
 $config = array();
 $config['appid']   = 'hss';
-$config['name'] = 'Storage Service';
+$config['name'] = 'Hooto Storage Service';
 $config['summary'] = 'Hooto Storage Service';
 
 $config['depends'][] = 'hss';

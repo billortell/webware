@@ -198,6 +198,7 @@ if (isset($cg['routes'])) {
  * database api
  */
 Hooto_Data_Sql::set('def', $cg['data']['def']);
+hdata_rds_service::set('def', $cg['data']['def']);
 
 /** Init */
 if (file_exists(SYS_ROOT."app/{$reqs->app}/func.php")) {

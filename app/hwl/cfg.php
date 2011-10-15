@@ -1,6 +1,6 @@
 <?php
 /**
- * Hooto Web library
+ * HOOTO LIB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * @category   hwl
- * @package    hwl_string
+ * @package    hwl_cfg
  * @copyright  Copyright 2011 HOOTO.COM
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -24,31 +24,26 @@
 defined('SYS_ROOT') or die('Access Denied!');
 
 /**
- * Class hwl_string
+ * Class hwl_cfg
  *
  * @category   hwl
- * @package    hwl_string
+ * @package    hwl_cfg
  * @copyright  Copyright 2011 HOOTO.COM
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
-class hwl_string
+final class hwl_cfg
 {
-  static function rand($len = 12, $t = 1)
+  private static $o = array();
+
+  public static function get($k)
   {
-    if ($t == 0) {
-      $s = mt_rand(1,9);
-      $c = str_split('0123456789');
-    } else if ($t == 1) {
-      $s = chr(mt_rand(97,102));
-      $c = str_split('0123456789abcdef');
-    } else {
-      $s = chr(mt_rand(97,122));
-      $c = str_split('0123456789abcdefghijklmnopqrstuvwxyz');
+    if (isset(self::$o[$k]))
+      return self::$o[$k];
+    
+    if (is_array($data = require SYS_ROOT."/conf/{$k}.php")) {
+      return (self::$o[$k] = $data);
     }
-    $len--;
-    for ($i=0; $i<$len; $i++) {
-      $s .= $c[array_rand($c)];
-    }
-    return$s;
+
+    return NULL;
   }
 }

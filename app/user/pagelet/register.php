@@ -11,7 +11,14 @@ if (isset($_REQUEST['url']) && strlen($_REQUEST['url']) > 10) {
 }
 
 $params = new Hooto_Object($_POST);
-
+$cfg = Hooto_Config_Array::get("user/global");
+$captcha_img = null;
+if (isset($cfg['captcha'])) {
+  if ($cfg['captcha']['type'] == 'hcaptcha') {
+    $captcha_token = hwl_string::rand(32);
+    $captcha_img = $cfg['captcha']['api'].'?token='.$captcha_token;
+  }
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
     
@@ -19,6 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         try {
         
+            if ($captcha_img !== null) {
+              $client = new hwl_httpclient("{$cfg['captcha']['api']}?word={$params->captcha_word}&token={$params->captcha_token}");
+              $client->doGet();
+              //echo $client->getBody(); 
+              if ($client->getBody() != 'OK') {
+                throw new Exception('Word Verification do not match');
+              }
+            }
             user_register::register($params);
             
             if (isset($params->url) && strlen($params->url) > 1) {
@@ -67,6 +82,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <td align="right"><b>Re-type Password</b></td>
       <td><input id="repass" name="repass" type="password" size="20" value="<?=$params->repass?>" /></td>
     </tr>
+    <?php if ($captcha_img !== null) { ?>
+    <tr>
+      <td align="right" valign="top"><b>Word Verification</b></td>
+      <td>
+        <img src="<?=$captcha_img?>" title="hcaptcha service"/><br />
+        <input id="captcha_token" name="captcha_token" type="hidden" value="<?=$captcha_token?>" />
+        <input id="captcha_word" name="captcha_word" type="text" size="12" value="" /> 
+      </td>
+    </tr>
+    <?php } ?>
     <tr>
       <td align="right"></td>
       <td><input type="submit" value="Sign up" class="input_button" /></td>

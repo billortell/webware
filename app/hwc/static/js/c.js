@@ -1,6 +1,8 @@
 
 function hwc_applist() {
-  $('#hwc_layout_body_content').load('/hwc/applist');
+  $('#hwc_layout_workspace_html').load('/hwc/applist');
+  $("#hwc_layout_workspace_html").removeClass('displaynone');
+  $("#hwc_layout_workspace_coder").addClass('displaynone');
   //topmenu_change('topmenu_node');
 }
 function topmenu_change(current) {
@@ -12,7 +14,9 @@ function hwc_app(id) {
 }
 function hwc_appcreate() {
   var appid = arguments[0] ? arguments[0] : '';
-  $('#hwc_layout_body_content').load('/hwc/appcreate?appid='+appid);
+  $('#hwc_layout_workspace_html').load('/hwc/appcreate?appid='+appid);
+  $("#hwc_layout_workspace_html").removeClass('displaynone');
+  $("#hwc_layout_workspace_coder").addClass('displaynone');
 }
 
 /** Editor **/

@@ -6,21 +6,23 @@
   <title><?php echo $this->headtitle; ?></title>
   
   <link rel="stylesheet" href="/_w/css/global.css" type="text/css" media="all" />
-  <link rel="stylesheet" href="/app/hwc/static/css/c.css" type="text/css" media="all" />
   <script src="/app/hwc/static/js/c.js"></script>
-  
   <script src="/app/jquery16/jquery-1.6.min.js"></script>
 
   <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
   <link href="/app/codemirror2/theme/default.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/app/codemirror2/theme/hooto.css" rel="stylesheet" type="text/css" media="all" />
   <script src="/app/codemirror2/lib/codemirror.js"></script>
   <script src="/app/codemirror2/lib/runmode.js"></script>
   <script src="/app/codemirror2/lib/overlay.js"></script>
+  <script src="/app/codemirror2/lib/util/foldcode.js"></script>
   <script src="/app/codemirror2/mode/xml/xml.js"></script>
   <script src="/app/codemirror2/mode/javascript/javascript.js"></script>
   <script src="/app/codemirror2/mode/css/css.js"></script>
   <script src="/app/codemirror2/mode/clike/clike.js"></script>
-  <script src="/app/codemirror2/mode/php/php.js"></script>
+  <script src="/app/codemirror2/mode/php/php.js"></script>  
+  
+  <link rel="stylesheet" href="/app/hwc/static/css/c.css" type="text/css" media="all" />
   <?php
   echo $this->headlink.$this->headJavascript.$this->headStylesheet; 
   ?>
@@ -47,19 +49,23 @@
   <!-- layout-body/ -->
   <div id="hwc_layout_body" class="hwc_layout_rightbox">
     
-    <!-- layout-body-tabs/ -->
+    <!-- layout-layout-tabs/ -->
     <div id="hwc_layout_body_tabs" class="hwc_layout_tabs">
-      <ul class="hwc_layout_tabsul">
+      <ul class="hwc_layout_tabs_item">
         <li id="ftabs_debug"></li>
       </ul>
+      <div id="hwc_layout_tabs_data"></div>
     </div>
-    <!-- /layout-body-tabs -->
+    <!-- /layout-layout-tabs -->
     
-    <!-- layout-body-content/ -->
-    <div id="hwc_layout_body_content">
+    <!-- layout-layout-workspace/ -->
+    <div id="hwc_layout_workspace_html">
       
     </div>
-    <!-- /layout-body-content -->
+    <div id="hwc_layout_workspace_coder">
+      
+    </div>
+    <!-- /layout-layout-workspace -->
   
   </div>
   <!-- /layout-body -->
@@ -71,8 +77,10 @@
 <script>
 
 var pages = new Array();
+var tabs_data = new Array();
 var pagecurrent = 0;
 var editor;
+var workspace_width_init = 0;
 
 function ws_resize() 
 {
@@ -84,7 +92,10 @@ function ws_resize()
   //$('#hwc_creator_sidebar').height(height);
 
   //$('.CodeMirror-scroll').height(height_workspace);
-  $('#hwc_creator_workspace').width(width_workspace);
+  if (width_workspace > workspace_width_init) {
+    $('#hwc_creator_workspace').width(width_workspace);
+    workspace_width_init = width_workspace;
+  }
   $('#hwc_creator_workspace').height(height_workspace);
   
   /* console.log('css.height:'+$('#hwc_header').css('height'));
@@ -107,8 +118,15 @@ function ws_init()
     </td> \
 	</tr> \
 </table>';
-    $('#hwc_layout_body_content').html(s);
+    $('#hwc_layout_workspace_coder').html(s);
   }
+}
+
+function _layout_workspace_switch(v)
+{
+  $("#hwc_layout_workspace_html").addClass('displaynone');
+  $("#hwc_layout_workspace_coder").addClass('displaynone');  
+  $("#hwc_layout_workspace_"+v).removeClass('displaynone');
 }
 
 function pl_open(path)
@@ -125,6 +143,8 @@ function pl_open(path)
   } else {
     pl_load_goto(path);
   }
+  
+  _layout_workspace_switch('coder');
 }
 
 function pl_load_goto(path)
@@ -132,7 +152,7 @@ function pl_load_goto(path)
   var hid = Math.abs(crc32(path));
   
   entry = '<li id="pagetab'+hid+'"><a href="javascript:pl_open(\''+path+'\')">'+path+'</a><a href="javascript:pl_close(\''+path+'\')" class="close">[x]</a></li>';
-  $(".hwc_layout_tabsul").prepend(entry);
+  $(".hwc_layout_tabs_item").prepend(entry);
   _tab_aclass_switch('pagetab'+hid);
 
   //
@@ -272,7 +292,7 @@ function pl_close(path)
       lineNumbers: true,
       matchBrackets: true,
       mode: "application/x-httpd-php",
-      indentUnit: 4,
+      indentUnit: 2,
       indentWithTabs: false,
       tabMode: "shift",
       onChange: function() {
@@ -308,7 +328,7 @@ function pl_preview(path)
 
 function _tab_aclass_switch(id) {
 
-  $(".hwc_layout_tabsul li").each(function(){
+  $(".hwc_layout_tabs_item li").each(function(){
     $(this).removeClass('current');
   });
 

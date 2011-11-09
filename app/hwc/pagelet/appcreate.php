@@ -105,7 +105,7 @@ $("#hwc_appcreate_form").submit(function(event) {
     url: $(this).attr('action'),
     data: dataString,
     success: function(data) {
-      $("#hwc_layout_body_content").empty().append(data);
+      $("#hwc_layout_workspace_html").empty().append(data);
       window.scrollTo(0,0);
     }
   });

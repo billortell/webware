@@ -7,8 +7,8 @@ $this->headtitle = "Web Creator";
 <table width="100%" class="table_list" cellspacing="0">
 <thead>
   <tr>
-    <th><b>APP ID</b></th>
     <th><b>NAME</b></th>
+    <th><b>APP ID</b></th>
     <th><b>VERSION</b></th>
     <th><b>RELEASE</b></th>
     <th><b>TYPE</b></th>
@@ -30,7 +30,7 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
 
   $appid = trim(strrchr($st, '/'), '/');
   
-  if (in_array($appid, array('hwc', 'hwl', 'hww', 'Zend'))) {
+  if (in_array($appid, array('hwc', 'hww', 'Zend'))) {
     continue;
   }
 
@@ -49,14 +49,13 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
   $val = array_merge($def, $val);
 ?>
 <tr>
-  <td><b><?=$val['appid']?></b></td>
-  <td><b><?=$val['name']?></b></td>
+  <td><b><a href="javascript:hwc_app('<?=$val['appid']?>')"><?=$val['name']?></a></b></td>
+  <td><?=$val['appid']?></td>
   <td><?=$val['version']?></td>
   <td><?=$val['release']?></td>
   <td><?=$val['type']?></td>
   <td>
     <a href="javascript:hwc_appcreate('<?=$val['appid']?>')">Setting</a>
-    <a href="javascript:hwc_app('<?=$val['appid']?>')">Edit</a>
   </td>
 </tr>
 <?php } ?>

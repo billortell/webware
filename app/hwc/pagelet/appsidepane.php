@@ -65,6 +65,8 @@ foreach (glob($glob) as $f) {
       $fmi = 'layers';
     } else if ($fn == 'page') {
       $fmi = 'layout_content';
+    } else if ($fn == 'action') {
+      $fmi = 'script_code_red';
     } else {
       $fmi = 'folder';
     }
@@ -75,6 +77,10 @@ foreach (glob($glob) as $f) {
 
     if ($fm == 'text/x-php' || substr($f,-4) == '.php') {
       $fmi = 'page_white_php';
+    }
+    
+    if (substr($f,-3) == '.sh') {
+      $fmi = 'application_osx_terminal';
     }
     
     $href = "javascript:pl_open('{$path}')";

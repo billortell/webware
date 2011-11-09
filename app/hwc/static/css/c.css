@@ -23,10 +23,10 @@ div {display:block;}
   margin: 0px 0px 0px 5px;
   clear: left;
   float: left;
-  width: 200px;
+  width: 220px;
 }
 #hwc_layout_body {
-  margin: 0px 10px 0px 220px;
+  margin: 0px 10px 0px 240px;
 }
 
 
@@ -84,14 +84,15 @@ div {display:block;}
 .CodeMirror {
   font-size:13px;
   border: 1px solid #ccc;
-  background-color:#fff; 
+  background-color: #fdfdfd; 
   height:90%;
+  line-height: 120%;
 }
 
 .CodeMirror-scroll {
   min-width:600px; max-width:900px;
   min-height:500px;
-  height:90%;
+  height:auto;
 }
 
 .activeline {background: #f0fcff !important;}

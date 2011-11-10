@@ -64,10 +64,13 @@ if (is_array($entry)) {
 
 echo $msg;
 
+$session = user_session::getInstance();
+//print_r($session);
 
 if (isset($entry->comment) && $entry->comment == 1) {
 
-    $captchaurl = hcaptcha_api::getImgUrl();
+  $captchaurl = hcaptcha_api::getImgUrl();
+  
 ?>
 <div class="comment-form">
   <a name="comment-add"></a>
@@ -80,7 +83,7 @@ if (isset($entry->comment) && $entry->comment == 1) {
   <table width="100%" border="0" cellpadding="0" cellspacing="10">
     <tr>
       <td width="160px" align="right"><b>Name</b></td>
-      <td><input type="text" name="uname" value="<?=$this->reqs->uname?>" /></td>
+      <td><input type="text" name="uname" value="<?=$session->uname?>" /></td>
     </tr>
     <tr>
       <td align="right" valign="top"><b>Content</b></td>

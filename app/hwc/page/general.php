@@ -11,11 +11,9 @@
 
   <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
   <link href="/app/codemirror2/theme/default.css" rel="stylesheet" type="text/css" media="all" />
-  <link href="/app/codemirror2/theme/hooto.css" rel="stylesheet" type="text/css" media="all" />
   <script src="/app/codemirror2/lib/codemirror.js"></script>
   <script src="/app/codemirror2/lib/runmode.js"></script>
   <script src="/app/codemirror2/lib/overlay.js"></script>
-  <script src="/app/codemirror2/lib/util/foldcode.js"></script>
   <script src="/app/codemirror2/mode/xml/xml.js"></script>
   <script src="/app/codemirror2/mode/javascript/javascript.js"></script>
   <script src="/app/codemirror2/mode/css/css.js"></script>
@@ -84,25 +82,17 @@ var workspace_width_init = 0;
 
 function ws_resize() 
 {
-  width_workspace  = $('body').width() - $('#hwc_layout_sidebar').outerWidth(true) - 20;
+  workspace_width_current  = $('body').width() - $('#hwc_layout_sidebar').outerWidth(true) - 20;
   height = $('body').height() - $('#hwc_header').outerHeight(true) - 10;  
   
   height_workspace = height - $('#hwc_layout_body_tabs').outerHeight(true);
   
-  //$('#hwc_creator_sidebar').height(height);
-
-  //$('.CodeMirror-scroll').height(height_workspace);
-  if (width_workspace > workspace_width_init) {
-    $('#hwc_creator_workspace').width(width_workspace);
-    workspace_width_init = width_workspace;
-  }
-  $('#hwc_creator_workspace').height(height_workspace);
-  
-  /* console.log('css.height:'+$('#hwc_header').css('height'));
-  console.log('height:'+$('#hwc_header').height());
-  console.log('outerHeight:'+$('#hwc_header').outerHeight());
-  console.log('outerHeight(1):'+$('#hwc_header').outerHeight(true)); */
-  
+  /* if (workspace_width_current > workspace_width_init) {
+    //$('#hwc_creator_workspace').width(workspace_width_current);
+    $('.CodeMirror-scroll').width(workspace_width_current);
+    workspace_width_init = workspace_width_current;
+  }*/
+  $('#hwc_creator_workspace').height(height_workspace);  
   $('.CodeMirror-scroll').height(height_workspace);
 }
 

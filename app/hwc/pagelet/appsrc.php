@@ -19,7 +19,7 @@ if (!file_exists($f)) {
 }
 
 $fm = mime_content_type($f);
-if (substr($fm,0,4) != 'text') {
+if (substr($fm,0,4) != 'text' && substr($fm,-3) != 'xml') {
   header("HTTP/1.0 404 Not Found"); die();
 }
 

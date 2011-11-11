@@ -73,7 +73,7 @@ foreach (glob($glob) as $f) {
     
     $href = "javascript:_hwc_dir('{$p}/$fn')";
     
-  } else if (substr($fm,0,4) == 'text') {
+  } else if (substr($fm,0,4) == 'text' || substr($fm, -3) == "xml") {
 
     if ($fm == 'text/x-php' || substr($f,-4) == '.php') {
       $fmi = 'page_white_php';

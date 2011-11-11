@@ -1,8 +1,19 @@
-
 body {
   display:block;
-  /* background-color: #e1e1e0; */
   background-color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 8px; height: 8px; background: #f2f2f2;
+}
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  display: none;
+}
+::-webkit-scrollbar-thumb:vertical,
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: #909090;
+  -webkit-border-radius: 4px;
 }
 
 div {display:block;}
@@ -90,8 +101,9 @@ div {display:block;}
 }
 
 .CodeMirror-scroll {
-  min-width:600px; max-width:900px;
-  min-height:500px;
+  /* min-width:600px; max-width:900px;*/
+  width:800px;
+  /* min-height:500px; */
   height:auto;
 }
 

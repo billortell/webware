@@ -1,12 +1,34 @@
 Hooto WebWare 
 
-is an easy-to-use platform that lets you build custom business applications 
-on your own, online (Similar to Zoho Creator)
+    is an easy-to-use platform that lets you build custom business applications 
+    on your own, online: Similar to Zoho Creator)
 
-* Open Source
-* Data Collection, Analysis, Reporting and Collaboration
-* Online Form, Workflow and Business Rules, Notifications
-* Design HTML Views, Brand with your Logo and Themes
-* Integrated with Hooto SSO and Hooto Data Protocol APIs
+    - Open Source
+    - Data Collection, Analysis, Reporting and Collaboration
+    - Online Form, Workflow and Business Rules, Notifications
+    - Design HTML Views, Brand with your Logo and Themes
+    - Integrated with Hooto SSO and Hooto Data Protocol APIs
 
+
+License
+    Apache License Version 2.0
+    http://www.apache.org/licenses/LICENSE-2.0
+
+
+The third party software of this product includes
+
+    MicroMVC
+        http://micromvc.com (License: MIT)
+    Zend Framework
+        http://framework.zend.com (License: New BSD)
+    jQuery
+        http://jquery.com  (License: MIT)
+    jQueryUI
+        http://jqueryui.com (License: MIT)
+    TinyMCE
+        http://tinymce.moxiecode.com (License: LGPL)
+    CodeMirror
+        http://codemirror.net (License: MIT)
+    FAMFAMFAM SILK ICONS
+        http://www.famfamfam.com (License: CC 2.5)
 

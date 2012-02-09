@@ -20,9 +20,7 @@ User-agent: *
 
 # Directories
 Disallow: /app/
-Disallow: /lib/
 Disallow: /data/
-Disallow: /tmp/
 
 # Files
 

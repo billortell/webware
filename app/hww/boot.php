@@ -23,6 +23,22 @@
 /** ensure this file is being included by a parent file */
 defined('SYS_ROOT') or die('Access Denied!');
 
+
+define('START_TIME', microtime(true));
+define('START_MEMORY_USAGE', memory_get_usage());
+
+defined('SYS_ROOT') or define('SYS_ROOT', realpath('../..'). DIRECTORY_SEPARATOR);
+
+if (preg_match("/gzip/", $_SERVER['HTTP_ACCEPT_ENCODING'])) {
+    ob_start();
+}
+
+// Ensure library/ is on include_path
+set_include_path(implode(PATH_SEPARATOR, array(
+    SYS_ROOT.'app', get_include_path()
+)));
+
+
 define('HWW_VERSION', '1.0.2lab');
 
 ini_set('zlib.output_compression', 'Off');
@@ -115,63 +131,8 @@ function uname2uid($v) {
 /** Sites Routing */
 $h = h(server('SERVER_NAME')?server('HTTP_HOST'):server('SERVER_NAME'));
 
-//V2
-/*
-$cg   = require SYS_ROOT."/sites/global.php";
-define('DOMAIN_NAME', (isset($cg['hosts'][$h]) ? $cg['hosts'][$h] : 'default'));
-//
-$csg  = require SYS_ROOT."/sites/".DOMAIN_NAME."/global.php";
-$url = ((url() ? explode('/', url()) : array()) + explode('/', 'index/index'));
-print_r($url);
-
-$a = array();
-
-foreach ($csg['routes'] as $v) {  
-  
-  $a = array();
-  
-  $v2 = explode('/', $v['r']);
-  
-  if (isset($v['ins']))
-    $a['ins'] = $v['ins'];
-  if (isset($v['act']))
-    $a['act'] = $v['act'];
-  
-  if ($v['t'] == 'simple') {
-  
-    foreach ($v2 as $k3 => $v3) {
-
-      if ($v3 == '*') {
-        break 2;
-      } else if (!isset($url[$k3])) {
-        continue 2;
-      }
-        
-      if (substr($v3, 0, 1) == ":") {        
-        $a[substr($v3, 1)] = $url[$k3];
-      } else if ($v3 == $url[$k3]) {   
-        $a[$k3] = $url[$k3];
-      } else {
-        continue 2;
-      }
-      
-    }
-  
-  } else {
-  
-  }
-}
-
-
-print_r($a);
-//print_r($_SERVER);
-return;
-
-
 // Get the controller and page
-list($instance, $action) = array_slice($url, 0, 2);
-*/
-
+//list($instance, $action) = array_slice($url, 0, 2);
 
 //echo "$instance/$action";
 // V1
@@ -217,7 +178,7 @@ if (file_exists(SYS_ROOT."/app/{$reqs->app}/action/{$reqs->act}.php")) {
 } else {
   $cia = Hooto_Config_Array::get("{$reqs->ins}/action_{$reqs->act}");
 }
-
+if (!isset($cia['pagelet'])) $cia['pagelet'] = array();
 
 /** views */
 $view = new Hooto_Web_View();

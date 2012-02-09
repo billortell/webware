@@ -1,6 +1,6 @@
 <?php
 /**
- * SmartKit
+ * Hooto Web Engine
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category   Index
- * @package    Index
- * @copyright  Copyright 2011 HOOTO.COM
+ * @package    hwe
+ * @copyright  Copyright 2012 HOOTO.COM
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
 
 //header("HTTP/1.1 503 Service Unavailable");
 //die("<h1>This site is down for maintenance. Please check back again soon.</h1>");
 
-define('START_TIME', microtime(true));
-define('START_MEMORY_USAGE', memory_get_usage());
+define('SYS_ROOT', realpath('.'). DIRECTORY_SEPARATOR);
 
-define('DS', DIRECTORY_SEPARATOR);
-define('SYS_ROOT', realpath('.'). DS);
-
-if (preg_match("/gzip/", $_SERVER['HTTP_ACCEPT_ENCODING'])) {
-    ob_start();
+$uri = array('default');
+foreach (array('REQUEST_URI','PATH_INFO','ORIG_PATH_INFO') as $v) {
+    if (preg_match('/^\/[\w\-~\/\.+%]{1,600}/', 
+        (isset($_SERVER[$v]) ? $_SERVER[$v] : NULL), $p)) {
+        $uri = explode('/', trim($p[0], '/')); break;
+    }
 }
 
-set_include_path(implode(PATH_SEPARATOR, array(SYS_ROOT.'app')));
+$ro = require SYS_ROOT.'conf/sites.php';
 
-require SYS_ROOT.'app/hww/boot.php';
-
-
+if (isset($ro['app'][$uri[0]])) {
+    require SYS_ROOT.$ro['app'][$uri[0]]['boot'];
+} else {
+    require SYS_ROOT.$ro['app']['default']['boot'];
+}

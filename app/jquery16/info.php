@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 return array (
   'appid' => 'jquery16',
   'name' => 'jQuery 1.6.x',
